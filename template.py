@@ -14,11 +14,32 @@ def y_or_n(yes_cond):
     print("Yes" if yes_cond else "No")
 
 
-def a_to_z():
-    return list(chr(ord("a") + i) for i in range(26))
+def a_to_z(lower=True):
+    """
+    a~zまたはA~Zが入ったリストを作成する関数
+
+    Parameters
+    ----------
+    lower : bool
+        小文字か大文字か(デフォルトは小文字)
+
+    Returns
+    -------
+    return : list
+        a~zまたはA~Zが入ったリスト
+    """
+    return list(chr(ord("a" if lower else "A") + i) for i in range(26))
 
 
 def atcoder():
+    """
+    リスト ['a', 't', 'c', 'o', 'd', 'e', 'r'] を作成する関数
+
+    Returns
+    -------
+    return : list
+        ['a', 't', 'c', 'o', 'd', 'e', 'r']
+    """
     return list("atcoder")
 
 
@@ -31,6 +52,19 @@ def aoki():
 
 
 def readline(back_slash=False):
+    """
+    文字を受け取る関数(input()をを短く、高速化した関数)
+
+    Parameters
+    ----------
+    back_slash : bool
+        末尾の\\nまで読み取るかどうか(デフォルトはFalse)
+
+    Returns
+    -------
+    return : str
+        受け取った文字
+    """
     if back_slash:
         return sys.stdin.readline()
     else:
@@ -38,6 +72,19 @@ def readline(back_slash=False):
 
 
 def sep_read(types=str):
+    """
+    複数の文字を受け取る関数(input().sprit()を短く、高速化した関数)
+
+    Parameters
+    ----------
+    types : type
+        受け取った値をキャストする型(デフォルトはstr型)
+
+    Returns
+    -------
+    return : list or map
+        typesによって異なる
+    """
     if types == str:
         return sys.stdin.readline().rstrip().split()
     else:
@@ -45,8 +92,22 @@ def sep_read(types=str):
 
 
 def bit_full_search(lst, n):
-    ans = []
+    """
+    ビット全探索する関数
 
+    Parameters
+    ----------
+    lst : list
+        ビット全探索したいリスト
+    n : int
+        リストの要素数
+
+    Returns
+    -------
+    return : list
+        ビット全探索した結果のリスト
+    """
+    ans = []
     for i in range(2 ** n):
         s_u_m = 0
         for j in range(n):
@@ -78,7 +139,6 @@ def rounding(num, digit):
     -----
     - digitが2以上の場合(2桁目以降に丸める時)、指数表記になるのでキャストが必要
     """
-
     deci = 10**digit
     return (decimal.Decimal(str(num)).
             quantize(decimal.Decimal(str(deci) if deci < 1 else "1E"+str(digit-1)), decimal.ROUND_HALF_UP))
@@ -152,7 +212,7 @@ class Deque:
 
 
 def main():
-
+    print(a_to_z(False))
 
 
 if __name__ == "__main__":

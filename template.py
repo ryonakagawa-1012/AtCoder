@@ -212,7 +212,6 @@ class Deque:
 
 
 def main():
-    print(a_to_z(False))
 
 
 if __name__ == "__main__":

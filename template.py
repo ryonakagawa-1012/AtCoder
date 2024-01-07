@@ -145,6 +145,9 @@ def rounding(num, digit):
 
 
 class Deque:
+    """
+    O(1)でランダムアクセスできるdeque
+    """
 
     def __init__(self, src_arr=[], max_len=300000):
         self.N = max(max_len, len(src_arr)) + 1

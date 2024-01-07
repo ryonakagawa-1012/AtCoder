@@ -1,0 +1,1 @@
+print(str(hex(int(input()))[2:].zfill(2)).upper())

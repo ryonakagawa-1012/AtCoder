@@ -53,7 +53,7 @@ def aoki():
 
 def readline(back_slash=False):
     """
-    文字を受け取る関数(input()をを短く、高速化した関数)
+    文字を受け取る関数(input()を短く、高速化した関数)
 
     Parameters
     ----------
@@ -144,6 +144,21 @@ def rounding(num, digit):
             quantize(decimal.Decimal(str(deci) if deci < 1 else "1E"+str(digit-1)), decimal.ROUND_HALF_UP))
 
 
+def print_2d(lst, sep=None):
+    """
+    2次元配列を出力する関数
+
+    Parameters
+    ----------
+    lst : list
+        出力したい2次元配列
+    sep : str
+        区切り文字(デフォルトはNone)
+    """
+    for LIST in lst:
+        print(*LIST, sep=sep)
+
+
 class Deque:
     """
     O(1)でランダムアクセスできるdeque
@@ -201,6 +216,14 @@ class Deque:
         self.head %= self.N
         return ret
 
+    def rotate(self, n=1):
+        if n > 0:
+            for _ in range(n):
+                self.appendleft(self.pop())
+        else:
+            for _ in range(abs(n)):
+                self.append(self.popleft())
+
     def __len__(self):
         return (self.tail - self.head) % self.N
 
@@ -215,10 +238,8 @@ class Deque:
 
 
 def main():
-    n = int(input())
-    l = set(readline() for i in range(n))
 
-    print(len(l))
+
 
 
 if __name__ == "__main__":

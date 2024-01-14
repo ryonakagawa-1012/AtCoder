@@ -215,10 +215,8 @@ class Deque:
 
 
 def main():
-    n = int(input())
-    l = set(readline() for i in range(n))
-
-    print(len(l))
+    x = int(input())
+    y_or_n(x%100 == 0 and x >= 100)
 
 
 if __name__ == "__main__":

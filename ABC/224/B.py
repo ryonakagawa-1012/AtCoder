@@ -215,10 +215,19 @@ class Deque:
 
 
 def main():
-    n = int(input())
-    l = set(readline() for i in range(n))
+    h, w = sep_read(int)
+    a = list(list(sep_read(int)) for _ in range(h))
 
-    print(len(l))
+    cond = True
+
+    for i1 in range(h):
+        for i2 in range(i1, h):
+            for j1 in range(w):
+                for j2 in range(j1, w):
+                    if not a[i1][j1]+a[i2][j2] <= a[i2][j1]+a[i1][j2]:
+                        cond = False
+
+    y_or_n(cond)
 
 
 if __name__ == "__main__":

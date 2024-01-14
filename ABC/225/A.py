@@ -215,10 +215,13 @@ class Deque:
 
 
 def main():
-    n = int(input())
-    l = set(readline() for i in range(n))
-
-    print(len(l))
+    cond = len(set(list(readline())))
+    if cond == 1:
+        print(1)
+    elif cond == 2:
+        print(3)
+    else:
+        print(6)
 
 
 if __name__ == "__main__":

@@ -201,6 +201,14 @@ class Deque:
         self.head %= self.N
         return ret
 
+    def rotate(self, n=1):
+        if n > 0:
+            for _ in range(n):
+                self.appendleft(self.pop())
+        else:
+            for _ in range(abs(n)):
+                self.append(self.popleft())
+
     def __len__(self):
         return (self.tail - self.head) % self.N
 
@@ -215,10 +223,10 @@ class Deque:
 
 
 def main():
-    n = int(input())
-    l = set(readline() for i in range(n))
+    n = readline()
 
-    print(len(l))
+    print(n.zfill(4))
+
 
 
 if __name__ == "__main__":

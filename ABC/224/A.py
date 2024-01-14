@@ -215,10 +215,7 @@ class Deque:
 
 
 def main():
-    n = int(input())
-    l = set(readline() for i in range(n))
-
-    print(len(l))
+    print("er" if readline()[-2:] == "er" else "ist")
 
 
 if __name__ == "__main__":

@@ -238,8 +238,8 @@ class Deque:
 
 
 def main():
-
-
+    n = int(readline())
+    print("L"+"o"*n+"ng")
 
 
 if __name__ == "__main__":

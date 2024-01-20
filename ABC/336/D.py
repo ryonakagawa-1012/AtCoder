@@ -238,8 +238,36 @@ class Deque:
 
 
 def main():
+    n = int(readline())
+    a = Deque(list(sep_read(int)))
 
+    if n % 2 != 0:
+            a.pop()
 
+    if n == 1:
+        print(1)
+    else:
+        for k in range(((n+1)//2)+1)[::-1]:
+            deg = False
+            for i in range(k):
+                if i+1 > a[i]:
+                    deg = True
+                    break
+
+            if not deg:
+                for i in range(k-1):
+                    print(i+1, a[-i-1])
+                    if i+1 > a[-i-1]:
+                        deg = True
+                        break
+
+            if deg:
+                a.pop()
+                a.popleft()
+                deg = False
+            else:
+                print(k)
+                exit()
 
 
 if __name__ == "__main__":

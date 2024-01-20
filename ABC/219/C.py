@@ -238,18 +238,22 @@ class Deque:
 
 
 def main():
-    n = list(bin(int(readline())))
+    x = list(readline())
+    n = int(input())
+    s = []
+    for _ in range(n):
+        st = readline()
+        tmp = []
+        for ST in st:
+            tmp.append(x.index(ST))
+        s.append(tmp)
+    # print(s)
 
-    count = 0
-
-    # print(n)
-
-    for i in n[::-1]:
-        if i == "0":
-            count += 1
-        else:
-            print(count)
-            exit()
+    for S in sorted(s):
+        ans = []
+        for SS in S:
+            ans.append(x[SS])
+        print(*ans, sep="")
 
 
 if __name__ == "__main__":

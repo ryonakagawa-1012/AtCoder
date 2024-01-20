@@ -238,18 +238,19 @@ class Deque:
 
 
 def main():
-    n = list(bin(int(readline())))
+    x = int(input())
 
-    count = 0
-
-    # print(n)
-
-    for i in n[::-1]:
-        if i == "0":
-            count += 1
-        else:
-            print(count)
-            exit()
+    if 0 <= x < 40:
+        print(40-x)
+        exit()
+    elif 40 <= x < 70:
+        print(70-x)
+        exit()
+    elif 70 <= x < 90:
+        print(90-x)
+        exit()
+    else:
+        print("expert")
 
 
 if __name__ == "__main__":

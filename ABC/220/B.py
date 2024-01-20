@@ -238,18 +238,10 @@ class Deque:
 
 
 def main():
-    n = list(bin(int(readline())))
+    n = int(input())
+    a, b = sep_read(int)
 
-    count = 0
-
-    # print(n)
-
-    for i in n[::-1]:
-        if i == "0":
-            count += 1
-        else:
-            print(count)
-            exit()
+    print(int(str(a), n)*int(str(b), n))
 
 
 if __name__ == "__main__":

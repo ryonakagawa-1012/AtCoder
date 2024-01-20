@@ -238,8 +238,20 @@ class Deque:
 
 
 def main():
+    from numpy import base_repr
 
+    n = list(base_repr(int(readline())-1, 5))
+    # print(n)
 
+    good_num = [i for i in range(0, 9, 2)]
+    # print(good_num)
+
+    ans = []
+
+    for N in n:
+        ans.append(good_num[int(N)])
+
+    print(*ans, sep="")
 
 
 if __name__ == "__main__":

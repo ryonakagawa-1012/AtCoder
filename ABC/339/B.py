@@ -237,24 +237,77 @@ class Deque:
         return 'Deque({0})'.format(str(list(self)))
 
 
+def move(x, y, w, h, muki, w_or_b):
+    if w_or_b == "w":
+        if muki == "U":
+            muki = "R"
+            x += 1
+            if x >= w:
+                x = 0
+
+        elif muki == "R":
+            muki = "D"
+            y += 1
+            if y >= h:
+                y = 0
+        elif muki == "D":
+            muki = "L"
+            x -= 1
+            if x < 0:
+                x = w-1
+        elif muki == "L":
+            muki = "U"
+            y -= 1
+            if y < 0:
+                y = h-1
+    else:
+        if muki == "U":
+            muki = "L"
+            x -= 1
+            if x < 0:
+                x = w-1
+        elif muki == "L":
+            muki = "D"
+            y += 1
+            if y >= h:
+                y = 0
+        elif muki == "D":
+            muki = "R"
+            x += 1
+            if x >= w:
+                x = 0
+        elif muki == "R":
+            muki = "U"
+            y -= 1
+            if y < 0:
+                y = h-1
+
+    return x, y, muki
+
+
 def main():
-    from collections import defaultdict
-    n, m = sep_read(int)
-    a = list(sep_read(int))
+    h, w, n = sep_read(int)
 
-    vote = defaultdict(int)
+    ans = [list("."*w) for _ in range(h)]
 
-    winner = 0
-    for A in a:
-        vote[A] += 1
-        if vote[winner] < vote[A]:
-            winner = A
-            print(winner)
-        elif vote[winner] > vote[A]:
-            print(winner)
+    x, y = 0, 0
+    muki = "U"
+    for _ in range(n):
+        if ans[y][x] == ".":
+            ans[y][x] = "#"
+            x, y, muki = move(x, y, w, h, muki, "w")
+            # print(x, y, muki)
+            # print_2d(ans)
+            # print()
         else:
-            winner = min(winner, A)
-            print(winner)
+            if ans[y][x] == "#":
+                ans[y][x] = "."
+                x, y, muki = move(x, y, w, h, muki, "b")
+                # print(x, y, muki)
+                # print_2d(ans)
+                # print()
+
+    print_2d(ans, sep="")
 
 
 if __name__ == "__main__":

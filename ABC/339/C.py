@@ -238,23 +238,24 @@ class Deque:
 
 
 def main():
-    from collections import defaultdict
-    n, m = sep_read(int)
+    from itertools import accumulate
+    n = int(input())
     a = list(sep_read(int))
 
-    vote = defaultdict(int)
+    accm = list(accumulate(a))
 
-    winner = 0
+    # print(accm)
+
+    start = 0
+    for i in range(n):
+        if accm[i] < 0:
+            start = abs(min(accm[i], start))
+
+    # print(start)
     for A in a:
-        vote[A] += 1
-        if vote[winner] < vote[A]:
-            winner = A
-            print(winner)
-        elif vote[winner] > vote[A]:
-            print(winner)
-        else:
-            winner = min(winner, A)
-            print(winner)
+        start += A
+
+    print(start)
 
 
 if __name__ == "__main__":

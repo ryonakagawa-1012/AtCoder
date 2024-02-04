@@ -238,23 +238,17 @@ class Deque:
 
 
 def main():
-    from collections import defaultdict
-    n, m = sep_read(int)
+    n, d = sep_read(int)
     a = list(sep_read(int))
 
-    vote = defaultdict(int)
+    dp = [1]*n
 
-    winner = 0
-    for A in a:
-        vote[A] += 1
-        if vote[winner] < vote[A]:
-            winner = A
-            print(winner)
-        elif vote[winner] > vote[A]:
-            print(winner)
-        else:
-            winner = min(winner, A)
-            print(winner)
+    for i in range(1, n):
+        for j in range(i-1, -1, -1):
+            if abs(a[i] - a[j]) <= d:
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    print(max(dp))
 
 
 if __name__ == "__main__":

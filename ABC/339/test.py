@@ -237,24 +237,45 @@ class Deque:
         return 'Deque({0})'.format(str(list(self)))
 
 
+class SegmentTree:
+    def __init__(self, size):
+        self.size = 2**(size-1).bit_length()
+        self.data = [0]*(self.size*2)
+
+    def update(self, k, v):
+        k += self.size
+        self.data[k] = v
+        while k > 1:
+            self.data[k>>1] = max(self.data[k], self.data[k^1])
+            k >>= 1
+
+    def query(self, l, r):
+        l += self.size
+        r += self.size
+        s = 0
+        while l < r:
+            if l & 1:
+                s = max(s, self.data[l])
+                l += 1
+            if r & 1:
+                r -= 1
+                s = max(s, self.data[r])
+            l >>= 1
+            r >>= 1
+        return s
+
 def main():
-    from collections import defaultdict
-    n, m = sep_read(int)
+    n, d = sep_read(int)
     a = list(sep_read(int))
 
-    vote = defaultdict(int)
+    dp = [0]*n
+    segtree = SegmentTree(n)
+    for i in range(n):
+        dp[i] = segtree.query(max(0, i-d), i) + 1
+        segtree.update(i, dp[i])
 
-    winner = 0
-    for A in a:
-        vote[A] += 1
-        if vote[winner] < vote[A]:
-            winner = A
-            print(winner)
-        elif vote[winner] > vote[A]:
-            print(winner)
-        else:
-            winner = min(winner, A)
-            print(winner)
+    print(max(dp))
+
 
 
 if __name__ == "__main__":

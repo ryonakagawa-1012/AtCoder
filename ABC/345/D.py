@@ -254,9 +254,53 @@ class Deque:
     def __str__(self):
         return 'Deque({0})'.format(str(list(self)))
 
+def can_cover(H, W, tiles):
+    grid = [[0]*W for _ in range(H)]
+    for tile in tiles:
+        for i in range(H):
+            for j in range(W):
+                if i + tile[0] <= H and j + tile[1] <= W:
+                    for x in range(tile[0]):
+                        for y in range(tile[1]):
+                            if grid[i+x][j+y] == 1:
+                                break
+                        else:
+                            continue
+                        break
+                    else:
+                        for x in range(tile[0]):
+                            for y in range(tile[1]):
+                                grid[i+x][j+y] = 1
+    return all(all(row) for row in grid)
+
 
 def main():
+    n, h, w = sep_read(int)
+    a = []
+    b = []
+    for _ in range(n):
+        at, bt = sep_read(int)
+        a.append(at)
+        b.append(bt)
 
+    # print(a)
+    # print(b)
+    for i in range(2 ** n):
+        pattern = []
+        for j in range(n):
+            if i >> j & 1:
+                pattern.append((a[j], b[j]))
+        # print(pattern)
+
+        for k in range(2 ** len(pattern)):
+            for l in range(len(pattern)):
+                if k >> l & 1:
+                    pattern[k-1] = (pattern[l][1], pattern[l][0])
+        if can_cover(h, w, pattern):
+            yes()
+            exit()
+
+    no()
 
 
 if __name__ == "__main__":

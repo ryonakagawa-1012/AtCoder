@@ -256,7 +256,8 @@ class Deque:
 
 
 def main():
-
+    x = int(readline())
+    print(-(-x // 10))
 
 
 if __name__ == "__main__":

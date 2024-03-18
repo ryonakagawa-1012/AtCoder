@@ -256,7 +256,29 @@ class Deque:
 
 
 def main():
+    from collections import Counter
 
+    s = list(readline())
+
+    ans = 0
+
+    counter = Counter(s)
+
+    for S in s:
+        if counter[S] > 1:
+            ans += 1
+            break
+
+    count = [0] * 26
+    for c in s:
+        count[ord(c) - ord('a')] += 1
+    # print(count)
+
+    for i in range(26):
+        for j in range(i+1, 26):
+            ans += count[i] * count[j]
+
+    print(ans)
 
 
 if __name__ == "__main__":

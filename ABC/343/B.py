@@ -91,24 +91,6 @@ def sep_read(types=str):
         return map(types, sys.stdin.readline().split())
 
 
-def read_multi_line_input():
-    """
-    複数行の数字を受け取る関数
-
-    Returns
-    -------
-    return : list
-        受け取った数字のリスト
-    """
-    a = []
-    while True:
-        try:
-            a.append(int(input()))
-        except EOFError:
-            break
-    return a
-
-
 def bit_full_search(lst, n):
     """
     ビット全探索する関数
@@ -256,7 +238,14 @@ class Deque:
 
 
 def main():
-
+    n = int(input())
+    for _ in range(n):
+        at = list(sep_read(int))
+        ans = []
+        for i in range(n):
+            if at[i] == 1:
+                ans.append(i+1)
+        print(*ans, sep=" ")
 
 
 if __name__ == "__main__":

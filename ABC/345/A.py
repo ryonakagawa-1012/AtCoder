@@ -256,7 +256,17 @@ class Deque:
 
 
 def main():
+    s = list(readline())
 
+    if s[0] == "<" and s[-1] == ">":
+        for i in range(1, len(s)-1):
+            if s[i] != "=":
+                no()
+                exit()
+        yes()
+        exit()
+
+    no()
 
 
 if __name__ == "__main__":

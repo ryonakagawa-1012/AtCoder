@@ -256,18 +256,14 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    from itertools import permutations
+    n = int(input())
+    p = list(sep_read(int))
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    sorted_list = list(permutations(sorted(p)))
+
+    # print(sorted_list)
+    print(*sorted_list[sorted_list.index(tuple(p))-1], sep=" ")
 
 
 if __name__ == "__main__":

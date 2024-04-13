@@ -256,18 +256,39 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    n = int(input())
+    a = list(sep_read(int))
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    first = "Memo"
+    second = "Numo"
+
+    a_min = min(a)
+    # min_count = a.count(a_min)
+
+    # print(a_min, min_count)
+
+
+    xor_sum = "None"
+    for i in range(n):
+        if a[i] == a_min:
+            continue
+        else:
+            if xor_sum == "None":
+                xor_sum = a[i] - a_min
+            else:
+                xor_sum = xor_sum ^ (a[i] - a_min)
+
+    try:
+        if xor_sum >= 1:
+            first, second = "Numo", "Memo"
+            # yes()
+    except TypeError:
+        pass
+
+    if (a_min * n) % 2 == 0:
+        print(second)
+    else:
+        print(first)
 
 
 if __name__ == "__main__":

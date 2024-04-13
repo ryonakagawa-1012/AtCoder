@@ -255,19 +255,25 @@ class Deque:
         return 'Deque({0})'.format(str(list(self)))
 
 
-def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+def solve(s, len_s):
+    for i in range(len_s - 1, 0, -1):
+        if s[:i] == s[-i:]:
+            if s.find(s[:i], 1, len_s - 1) == -1:
+                return i
+    return 0
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+
+def main():
+    q = int(input())
+    s = ""
+    len_s = 0
+    for _ in range(q):
+        query = sep_read()
+        if query[0] == "1":
+            len_s += 1
+            s += query[1]
+        else:
+            print(solve(s, len_s))
 
 
 if __name__ == "__main__":

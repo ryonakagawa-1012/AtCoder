@@ -256,18 +256,22 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    from math import sqrt
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    n = int(input())
+    points = [list(map(int, input().split())) for _ in range(n)]
+
+    for i in range(n):
+        max_distance = -1
+        max_index = -1
+        for j in range(n):
+            if i == j:
+                continue
+            distance = sqrt((points[i][0] - points[j][0])**2 + (points[i][1] - points[j][1])**2)
+            if distance > max_distance:
+                max_distance = distance
+                max_index = j
+        print(max_index + 1)
 
 
 if __name__ == "__main__":

@@ -16,12 +16,11 @@ def a_to_z(lower=True):
 
 
 from random import randint
-# N = randint(1, 10000)
-# D = randint(1, 10000)
-# A = [randint(1, 10000) for i in range(N)]
-# print(N, D)
-# print(*A)
 
-abc = a_to_z()
-test = [abc[randint(0, 25)] for i in range(10000)]
-print(*test, sep="")
+N = randint(1, 200000)
+A = randint(1, 10**9)
+B = randint(1, 10**9)
+D = sorted((randint(1, 10000) for i in range(N)))
+
+print(N, A, B)
+print(*D, sep=" ")

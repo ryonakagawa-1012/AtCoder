@@ -256,18 +256,54 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    h, w = sep_read(int)
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    a = []
+    start = ()
+    for _ in range(h):
+        at = readline()
+        if "S" in at:
+            start = (_, at.find("S"))
+        a.append(at)
+
+    print(start)
+    print_2d(a)
+
+    n = int(readline())
+    energy = [[0] * w for _ in range(h)]
+    for _ in range(n):
+        r, c, e = sep_read(int)
+        # print(r, c, e)
+        energy[r-1][c-1] = e
+
+    print_2d(energy)
+
+    takahashi_energy = energy[start[0]][start[1]]
+    print(takahashi_energy)
+
+    if takahashi_energy == 0:
+        no()
+    else:
+        queue = Deque([start])
+        while queue:
+            x, y = queue.popleft()
+            if a[x][y] == 'T':
+                yes()
+                return
+            for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                nx, ny = x + dx, y + dy
+                if nx < 0 or nx >= h or ny < 0 or ny >= w:
+                    continue
+                if a[nx][ny] == '#' or energy[nx][ny] == -1:
+                    continue
+                energy[nx][ny] = max(energy[nx][ny], energy[x][y] - 1)
+                if energy[nx][ny] > 0:
+                    queue.append((nx, ny))
+
+        no()
+
+
+
 
 
 if __name__ == "__main__":

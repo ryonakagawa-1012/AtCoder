@@ -256,18 +256,24 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    s = list("wbwbwwbwbwbw"*18)
+    # print(s)
+    w, b = sep_read(int)
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    for i in range(0, 18):
+        w_count = 0
+        b_count = 0
+        for j in range(i, 12*18):
+            if s[j] == "w":
+                w_count += 1
+            if s[j] == "b":
+                b_count += 1
+
+            if w_count == w and b_count == b:
+                yes()
+                exit()
+
+    no()
 
 
 if __name__ == "__main__":

@@ -256,18 +256,36 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    from math import sqrt
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    n = int(input())
+    x = []
+    y = []
+    for _ in range(n):
+        xt, yt = sep_read(int)
+        x.append(xt)
+        y.append(yt)
+
+    zahyou_list = dict()
+
+    for i in range(n):
+        zahyou_list[i+1] = (x[i], y[i])
+
+    for i in range(n):
+        search_x, search_y = zahyou_list[i+1]
+        # print(search_x, search_y)
+        point_max = -float("inf")
+        max_num = None
+        print(search_x, search_y)
+        for j in range(n):
+            xp, yp = zahyou_list[j+1]
+            # print(xp, yp)
+            euclid = sqrt((xp - search_x)**2 + (yp - search_y)**2)
+            print(euclid)
+            if point_max < euclid:
+                point_max = euclid
+                max_num = i+1
+        print(max_num)
 
 
 if __name__ == "__main__":

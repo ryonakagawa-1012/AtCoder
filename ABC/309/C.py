@@ -256,18 +256,24 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    from collections import defaultdict
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    n, k = sep_read(int)
+    ab = []
+    for _ in range(n):
+        at, bt = sep_read(int)
+        ab.append((at, bt))
+
+    ans = defaultdict(int)
+    for AB in ab:
+        for i in range(1, AB[0]+1):
+            ans[i] += AB[1]
+
+    # print(ans)
+    for ANS in ans.items():
+        if ANS[1] <= k:
+            print(ANS[0])
+            exit()
 
 
 if __name__ == "__main__":

@@ -256,18 +256,20 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    from bisect import bisect_right
+    n, k = sep_read(int)
+    a = sorted(list(set(sep_read(int))))
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    total_sum = k*(k+1)//2
+
+    a_sum = 0
+
+    for i in range(bisect_right(a, k)):
+        a_sum += a[i]
+        # print(i)
+
+    # print(total_sum, a_sum)
+    print(total_sum-a_sum)
 
 
 if __name__ == "__main__":

@@ -256,18 +256,14 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    n, a, b = sep_read(int)
+    d = list(sep_read(int))
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    d = sorted(set(map(lambda x: x % (a+b), d)))
+
+    for x, y in zip(d, d[1:] + [d[0] + a+b]):
+        print(x, y)
+
 
 
 if __name__ == "__main__":

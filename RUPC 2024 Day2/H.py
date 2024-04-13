@@ -257,17 +257,42 @@ class Deque:
 
 def main():
     n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    a = list(sep_read(int))
+    b = list(sep_read(int))
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    dp = []
+
+    m_inf = -float("inf")
+
+    dp_max = m_inf
+    max_index = int
+    for i in range(n-m+1):
+        dp.append(a[i]*b[0])
+        if dp_max < dp[i]:
+            dp_max = dp[i]
+            max_index = i
+
+    bdp_max = dp_max
+    bmax_index = max_index
+    # print(dp)
+    # print(dp_max)
+    # print(bmax_index)
+
+    for i in range(1, m):
+        dp = []
+        dp_max = m_inf
+        for j in range(bmax_index+1, n-m+i+1):
+            # print(j, j - (bmax_index + 1))
+            dp.append((a[j] * b[i]) + bdp_max)
+            if dp_max < dp[j - (bmax_index + 1)]:
+                dp_max = dp[j - (bmax_index + 1)]
+                max_index = j
+        bdp_max = dp_max
+        bmax_index = max_index
+        # print(dp)
+        # print(dp_max)
+
+    print(dp_max)
 
 
 if __name__ == "__main__":

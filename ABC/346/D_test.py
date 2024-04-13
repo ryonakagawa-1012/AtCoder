@@ -254,20 +254,11 @@ class Deque:
     def __str__(self):
         return 'Deque({0})'.format(str(list(self)))
 
-
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    n = int(input())
+    s = list(map(int, list(readline())))
+    c = list(map(int, input().split()))
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
 
 
 if __name__ == "__main__":

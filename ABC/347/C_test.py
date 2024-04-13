@@ -256,19 +256,22 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    n, a, b = sep_read(int)
+    s = list(sep_read(int))
+    min_s = s[0]
+    s = list(map(lambda x: x-min_s+1, s))
+    # print(s)
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    for d in s:
+        if d % (a + b) > a:
+            # print(d % (a + b) == 0)
+            # print(d % (a + b) > a)
+            # print(d)
+            no()
+            return
+    yes()
 
 
 if __name__ == "__main__":
     main()
+

@@ -157,9 +157,9 @@ def rounding(num, digit):
     -----
     - digitが2以上の場合(2桁目以降に丸める時)、指数表記になるのでキャストが必要
     """
-    deci = 10 ** digit
+    deci = 10**digit
     return (decimal.Decimal(str(num)).
-            quantize(decimal.Decimal(str(deci) if deci < 1 else "1E" + str(digit - 1)), decimal.ROUND_HALF_UP))
+            quantize(decimal.Decimal(str(deci) if deci < 1 else "1E"+str(digit-1)), decimal.ROUND_HALF_UP))
 
 
 def print_2d(lst, sep=None):
@@ -197,7 +197,7 @@ class Deque:
 
     def __extend(self):
         ex = self.N - 1
-        self.buf[self.tail + 1: self.tail + 1] = [None] * ex
+        self.buf[self.tail+1: self.tail+1] = [None] * ex
         self.N = len(self.buf)
         if self.head > 0:
             self.head += ex
@@ -256,18 +256,21 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    from collections import defaultdict
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    n = int(input())
+    a = list(sep_read(int))
+
+    count = defaultdict(int)
+    ans = dict()
+
+    for i in range(3*n):
+        count[a[i]] += 1
+        if count[a[i]] == 2:
+            ans[a[i]] = i
+
+    for ans in sorted(ans.items(), key=lambda x: x[1]):
+        print(ans[0], end=" ")
 
 
 if __name__ == "__main__":

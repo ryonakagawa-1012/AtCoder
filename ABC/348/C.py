@@ -256,18 +256,16 @@ class Deque:
 
 
 def main():
-    n, m = sep_read(int)
-    a = []
-    b = []
-    ans = {i: list() for i in range(1, n+1)}
-    for _ in range(m):
-        at, bt = sep_read(int)
-        ans[at].append(bt)
-        ans[bt].append(at)
+    from collections import defaultdict
+    n = int(input())
+    inf = float("inf")
+    taste_list = defaultdict(lambda: inf)
+    for _ in range(n):
+        at, ct = sep_read(int)
+        taste_list[ct] = min(taste_list[ct], at)
 
-    for i in range(1, n+1):
-        print(len(ans[i]), end=" ")
-        print(*sorted(ans[i]), sep=" ")
+    # print(taste_list)
+    print(max(taste_list.values()))
 
 
 if __name__ == "__main__":

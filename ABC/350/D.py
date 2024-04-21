@@ -255,31 +255,62 @@ class Deque:
         return 'Deque({0})'.format(str(list(self)))
 
 
+class unionfind:
+    # n 頂点の Union-Find 木を作成
+    # （ここでは頂点番号が 1-indexed になるように実装しているが、0-indexed の場合は par, size のサイズは n でよい）
+    def __init__(self, n):
+        self.n = n
+        self.par = [-1] * (n + 1)  # 最初は親が無い
+        self.size = [1] * (n + 1)  # 最初はグループの頂点数が 1
+
+    # 頂点 x の根を返す関数
+    def root(self, x):
+        # 1 個先（親）がなくなる（つまり根に到達する）まで、1 個先（親）に進み続ける
+        while self.par[x] != -1:
+            x = self.par[x]
+        return x
+
+    # 要素 u, v を統合する関数
+    def unite(self, u, v):
+        rootu = self.root(u)
+        rootv = self.root(v)
+        if rootu != rootv:
+            # u と v が異なるグループのときのみ処理を行う
+            if self.size[rootu] < self.size[rootv]:
+                self.par[rootu] = rootv
+                self.size[rootv] += self.size[rootu]
+            else:
+                self.par[rootv] = rootu
+                self.size[rootu] += self.size[rootv]
+
+    #  要素 u と v が同一のグループかどうかを返す関数
+    def same(self, u, v):
+        return self.root(u) == self.root(v)
+
+
 def main():
-    l, r = sep_read(int)
-    l_2 = 0
-    r_2 = 0
-    for i in range(61):
-        c = 2 ** i
-        if l <= c:
-            l_2 = i
-            break
+    n, m = sep_read(int)
+    graph = unionfind(n+1)
+    matrix = [[0] * (n+1) for _ in range(n+1)]
+    for _ in range(m):
+        at, bt = sep_read(int)
+        graph.unite(at, bt)
+        matrix[at][bt] = 1
+        matrix[bt][at] = 1
 
+    # print_2d(matrix, sep=" ")
 
-    for i in range(61):
-        c = 2 ** i
-        if r == c:
-            r_2 = i
-            break
-        elif r < c:
-            r_2 = i-1
-            break
+    ans = 0
+    for i in range(1, n):
+        for j in range(i+1, n+1):
+            if matrix[i][j] == 0:
+                if graph.same(i, j):
+                    ans += 1
+                    graph.unite(i, j)
+                    matrix[i][j] = 1
+                    matrix[j][i] = 1
 
-    ans = list(list())
-    while ans[-1][-1] == r:
-        ans.append()
-
-    print(l_2, r_2)
+    print(ans)
 
 
 if __name__ == "__main__":

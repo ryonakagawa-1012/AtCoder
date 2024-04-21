@@ -157,9 +157,9 @@ def rounding(num, digit):
     -----
     - digitが2以上の場合(2桁目以降に丸める時)、指数表記になるのでキャストが必要
     """
-    deci = 10**digit
+    deci = 10 ** digit
     return (decimal.Decimal(str(num)).
-            quantize(decimal.Decimal(str(deci) if deci < 1 else "1E"+str(digit-1)), decimal.ROUND_HALF_UP))
+            quantize(decimal.Decimal(str(deci) if deci < 1 else "1E" + str(digit - 1)), decimal.ROUND_HALF_UP))
 
 
 def print_2d(lst, sep=None):
@@ -197,7 +197,7 @@ class Deque:
 
     def __extend(self):
         ex = self.N - 1
-        self.buf[self.tail+1: self.tail+1] = [None] * ex
+        self.buf[self.tail + 1: self.tail + 1] = [None] * ex
         self.N = len(self.buf)
         if self.head > 0:
             self.head += ex
@@ -256,30 +256,23 @@ class Deque:
 
 
 def main():
-    l, r = sep_read(int)
-    l_2 = 0
-    r_2 = 0
-    for i in range(61):
-        c = 2 ** i
-        if l <= c:
-            l_2 = i
-            break
+    import math
 
+    n, a, x, y = sep_read(int)
 
-    for i in range(61):
-        c = 2 ** i
-        if r == c:
-            r_2 = i
-            break
-        elif r < c:
-            r_2 = i-1
-            break
+    dp = [float('inf')] * (n + 1)
+    dp[0] = 0
 
-    ans = list(list())
-    while ans[-1][-1] == r:
-        ans.append()
+    for i in range(1, n + 1):
+        # X円払ってiを⌊i/A⌋にする操作
+        dp[i] = min(dp[i], dp[math.floor(i / a)] + x)
 
-    print(l_2, r_2)
+        # Y円払ってサイコロを振る操作
+        for b in range(1, 7):
+            expected = sum(dp[i // b] for b in range(1, 7)) / 6
+            dp[i] = min(dp[i], expected + y)
+
+    print(dp[n])
 
 
 if __name__ == "__main__":

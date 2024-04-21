@@ -256,30 +256,27 @@ class Deque:
 
 
 def main():
-    l, r = sep_read(int)
-    l_2 = 0
-    r_2 = 0
-    for i in range(61):
-        c = 2 ** i
-        if l <= c:
-            l_2 = i
-            break
+    n = int(input())
+    a = list(map(int, input().split()))
 
+    pos = [0] * (n + 1)
+    for i in range(n):
+        pos[a[i]] = i
 
-    for i in range(61):
-        c = 2 ** i
-        if r == c:
-            r_2 = i
-            break
-        elif r < c:
-            r_2 = i-1
-            break
+    # print(pos)
+    ops = 0
+    swaps = []
+    for i in range(n):
+        if a[i] != i + 1:
+            a[pos[i + 1]], a[i] = a[i], a[pos[i + 1]]
+            swaps.append((i+1, pos[i+1]+1))  # Record the swap
+            pos[a[pos[i + 1]]], pos[i + 1] = pos[i + 1], i
+            ops += 1
 
-    ans = list(list())
-    while ans[-1][-1] == r:
-        ans.append()
-
-    print(l_2, r_2)
+    # print(pos)
+    print(ops)
+    for swap in swaps:
+        print(*swap)
 
 
 if __name__ == "__main__":

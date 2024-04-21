@@ -256,6 +256,30 @@ class Deque:
 
 
 def main():
+    from collections import defaultdict
+    s = list(readline())
+
+    ans = defaultdict(int)
+
+    for S in s:
+        ans[S] += 1
+
+    ans_2 = list(ans.values())
+
+    # print(ans)
+    # print(ans_2)
+
+    for i in range(1, 101):
+        if ans_2.count(i) == 2 or ans_2.count(i) == 0:
+            continue
+        else:
+            # print(i == ans_2.count(i))
+            # print(ans_2.count(i) == 0)
+            # print(i)
+            no()
+            exit()
+
+    yes()
 
 
 if __name__ == "__main__":

@@ -255,32 +255,20 @@ class Deque:
         return 'Deque({0})'.format(str(list(self)))
 
 
+def is_airport_code(s, t):
+    # Generate all substrings of length 3 and 2 from s
+    substrings = [s[i:i+3].upper() for i in range(len(s)-2)] + [s[i:i+2].upper()+'X' for i in range(len(s)-1)]
+
+    # Check if t is in the list of substrings
+    return t in substrings
+
 def main():
-    l, r = sep_read(int)
-    l_2 = 0
-    r_2 = 0
-    for i in range(61):
-        c = 2 ** i
-        if l <= c:
-            l_2 = i
-            break
-
-
-    for i in range(61):
-        c = 2 ** i
-        if r == c:
-            r_2 = i
-            break
-        elif r < c:
-            r_2 = i-1
-            break
-
-    ans = list(list())
-    while ans[-1][-1] == r:
-        ans.append()
-
-    print(l_2, r_2)
-
+    s = readline()
+    t = readline()
+    if is_airport_code(s, t):
+        yes()
+    else:
+        no()
 
 if __name__ == "__main__":
     main()

@@ -157,9 +157,9 @@ def rounding(num, digit):
     -----
     - digitが2以上の場合(2桁目以降に丸める時)、指数表記になるのでキャストが必要
     """
-    deci = 10**digit
+    deci = 10 ** digit
     return (decimal.Decimal(str(num)).
-            quantize(decimal.Decimal(str(deci) if deci < 1 else "1E"+str(digit-1)), decimal.ROUND_HALF_UP))
+            quantize(decimal.Decimal(str(deci) if deci < 1 else "1E" + str(digit - 1)), decimal.ROUND_HALF_UP))
 
 
 def print_2d(lst, sep=None):
@@ -197,7 +197,7 @@ class Deque:
 
     def __extend(self):
         ex = self.N - 1
-        self.buf[self.tail+1: self.tail+1] = [None] * ex
+        self.buf[self.tail + 1: self.tail + 1] = [None] * ex
         self.N = len(self.buf)
         if self.head > 0:
             self.head += ex
@@ -256,6 +256,43 @@ class Deque:
 
 
 def main():
+    s = list(readline())
+    t = list(readline().lower())
+    # print(t)
+
+    if t[-1] != "x":
+        first = False
+        second = False
+        for S in s:
+            # print(t[0] == S, first and t[1] == S, first and second and t[2] == S)
+            # print(t[2], S)
+            # print(t[2] == S)
+            if first == False and t[0] == S:
+                first = True
+                continue
+
+            if first and second == False and t[1] == S:
+                second = True
+                continue
+
+            if first and second and t[2] == S:
+                yes()
+                exit()
+
+        # print(first, second)
+
+    else:
+        first = False
+        for S in s:
+            if first == False and t[0] == S:
+                first = True
+                continue
+
+            if first and t[1] == S:
+                yes()
+                exit()
+
+    no()
 
 
 if __name__ == "__main__":

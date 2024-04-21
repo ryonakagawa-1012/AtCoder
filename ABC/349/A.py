@@ -256,6 +256,10 @@ class Deque:
 
 
 def main():
+    n = int(input())
+    a = list(sep_read(int))
+
+    print(-sum(a))
 
 
 if __name__ == "__main__":

@@ -256,30 +256,17 @@ class Deque:
 
 
 def main():
-    l, r = sep_read(int)
-    l_2 = 0
-    r_2 = 0
-    for i in range(61):
-        c = 2 ** i
-        if l <= c:
-            l_2 = i
-            break
+    n, q = sep_read(int)
+    t = list(sep_read(int))
 
+    tooth_lst = set(i for i in range(1, n+1))
+    for T in t:
+        if T in tooth_lst:
+            tooth_lst.remove(T)
+        else:
+            tooth_lst.add(T)
 
-    for i in range(61):
-        c = 2 ** i
-        if r == c:
-            r_2 = i
-            break
-        elif r < c:
-            r_2 = i-1
-            break
-
-    ans = list(list())
-    while ans[-1][-1] == r:
-        ans.append()
-
-    print(l_2, r_2)
+    print(len(tooth_lst))
 
 
 if __name__ == "__main__":

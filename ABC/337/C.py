@@ -238,19 +238,26 @@ class Deque:
 
 
 def main():
-    from math import floor, ceil
+    from collections import defaultdict
+    n = int(input())
+    a = list(sep_read(int))
 
-    n = int(readline())
+    order = defaultdict(int)
+    check = None
+    for i in range(n):
+        order[a[i]] = i+1
+        if a[i] == -1:
+            check = i+1
 
-    kokuban = Deque([n])
-    kokuban_len = 0
-    while kokuban[0] > 2:
-        tmp1 = floor(n/2)
-        tmp2 = ceil(n/2)
-        x = n
+    # print(order)
+    # print(check)
 
+    ans = [check]
+    for i in range(n):
+        check = order[check]
+        ans.append(check)
 
-
+    print(*ans[:-1], sep=" ")
 
 
 if __name__ == "__main__":

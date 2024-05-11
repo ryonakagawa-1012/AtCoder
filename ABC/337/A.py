@@ -238,19 +238,19 @@ class Deque:
 
 
 def main():
-    from math import floor, ceil
+    n = int(input())
+    x, y = [], []
+    for i in range(n):
+        xt, yt = sep_read(int)
+        x.append(xt)
+        y.append(yt)
 
-    n = int(readline())
-
-    kokuban = Deque([n])
-    kokuban_len = 0
-    while kokuban[0] > 2:
-        tmp1 = floor(n/2)
-        tmp2 = ceil(n/2)
-        x = n
-
-
-
+    if sum(x) > sum(y):
+        takahashi()
+    elif sum(x) < sum(y):
+        aoki()
+    else:
+        print("Draw")
 
 
 if __name__ == "__main__":

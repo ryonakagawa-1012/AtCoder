@@ -157,9 +157,9 @@ def rounding(num, digit):
     -----
     - digitが2以上の場合(2桁目以降に丸める時)、指数表記になるのでキャストが必要
     """
-    deci = 10**digit
+    deci = 10 ** digit
     return (decimal.Decimal(str(num)).
-            quantize(decimal.Decimal(str(deci) if deci < 1 else "1E"+str(digit-1)), decimal.ROUND_HALF_UP))
+            quantize(decimal.Decimal(str(deci) if deci < 1 else "1E" + str(digit - 1)), decimal.ROUND_HALF_UP))
 
 
 def print_2d(lst, sep=None):
@@ -197,7 +197,7 @@ class Deque:
 
     def __extend(self):
         ex = self.N - 1
-        self.buf[self.tail+1: self.tail+1] = [None] * ex
+        self.buf[self.tail + 1: self.tail + 1] = [None] * ex
         self.N = len(self.buf)
         if self.head > 0:
             self.head += ex
@@ -255,60 +255,121 @@ class Deque:
         return 'Deque({0})'.format(str(list(self)))
 
 
-class unionfind:
-    # n 頂点の Union-Find 木を作成
-    # （ここでは頂点番号が 1-indexed になるように実装しているが、0-indexed の場合は par, size のサイズは n でよい）
+from collections import defaultdict
+
+
+class UnionFind:
     def __init__(self, n):
         self.n = n
-        self.par = [-1] * (n + 1)  # 最初は親が無い
-        self.size = [1] * (n + 1)  # 最初はグループの頂点数が 1
+        self.parents = [-1] * n
 
-    # 頂点 x の根を返す関数
-    def root(self, x):
-        # 1 個先（親）がなくなる（つまり根に到達する）まで、1 個先（親）に進み続ける
-        while self.par[x] != -1:
-            x = self.par[x]
-        return x
+    def find(self, x):
+        if self.parents[x] < 0:
+            return x
+        else:
+            self.parents[x] = self.find(self.parents[x])
+            return self.parents[x]
 
-    # 要素 u, v を統合する関数
-    def unite(self, u, v):
-        rootu = self.root(u)
-        rootv = self.root(v)
-        if rootu != rootv:
-            # u と v が異なるグループのときのみ処理を行う
-            if self.size[rootu] < self.size[rootv]:
-                self.par[rootu] = rootv
-                self.size[rootv] += self.size[rootu]
-            else:
-                self.par[rootv] = rootu
-                self.size[rootu] += self.size[rootv]
+    def union(self, x, y):
+        x = self.find(x)
+        y = self.find(y)
 
-    #  要素 u と v が同一のグループかどうかを返す関数
-    def same(self, u, v):
-        return self.root(u) == self.root(v)
+        if x == y:
+            return
+
+        if self.parents[x] > self.parents[y]:
+            x, y = y, x
+
+        self.parents[x] += self.parents[y]
+        self.parents[y] = x
+
+    def size(self, x):
+        return -self.parents[self.find(x)]
+
+    def same(self, x, y):
+        return self.find(x) == self.find(y)
+
+    def members(self, x):
+        root = self.find(x)
+        return [i for i in range(self.n) if self.find(i) == root]
+
+    def roots(self):
+        return [i for i, x in enumerate(self.parents) if x < 0]
+
+    def group_count(self):
+        return len(self.roots())
+
+    def all_group_members(self):
+        group_members = defaultdict(list)
+        for member in range(self.n):
+            group_members[self.find(member)].append(member)
+        return group_members
+
+    def __str__(self):
+        return '\n'.join(f'{r}: {m}' for r, m in self.all_group_members().items())
+
+
+class UnionFindLabel(UnionFind):
+    def __init__(self, labels):
+        assert len(labels) == len(set(labels))
+
+        self.n = len(labels)
+        self.parents = [-1] * self.n
+        self.d = {x: i for i, x in enumerate(labels)}
+        self.d_inv = {i: x for i, x in enumerate(labels)}
+
+    def find_label(self, x):
+        return self.d_inv[super().find(self.d[x])]
+
+    def union(self, x, y):
+        super().union(self.d[x], self.d[y])
+
+    def size(self, x):
+        return super().size(self.d[x])
+
+    def same(self, x, y):
+        return super().same(self.d[x], self.d[y])
+
+    def members(self, x):
+        root = self.find(self.d[x])
+        return [self.d_inv[i] for i in range(self.n) if self.find(i) == root]
+
+    def roots(self):
+        return [self.d_inv[i] for i, x in enumerate(self.parents) if x < 0]
+
+    def all_group_members(self):
+        group_members = defaultdict(list)
+        for member in range(self.n):
+            group_members[self.d_inv[self.find(member)]].append(self.d_inv[member])
+        return group_members
 
 
 def main():
     n, m = sep_read(int)
-    graph = unionfind(n+1)
-    matrix = [[0] * (n+1) for _ in range(n+1)]
-    for _ in range(m):
+    ut = UnionFind(n)
+    is_connect = list([False] * n for i in range(n))
+    # print(is_connect)
+    for i in range(m):
         at, bt = sep_read(int)
-        graph.unite(at, bt)
-        matrix[at][bt] = 1
-        matrix[bt][at] = 1
+        ut.union(at - 1, bt - 1)
+        is_connect[at-1][bt-1] = True
+        is_connect[bt-1][at-1] = True
 
-    # print_2d(matrix, sep=" ")
+    # print_2d(is_connect)
+    # print(ut.roots())
+    # print(ut.all_group_members())
 
     ans = 0
-    for i in range(1, n):
-        for j in range(i+1, n+1):
-            if matrix[i][j] == 0:
-                if graph.same(i, j):
+    for root in ut.roots():
+        group = ut.all_group_members()[root]
+        group_len = len(group)
+
+        # print(group)
+        # print(group_len)
+        for i in range(group_len):
+            for j in range(i+1, group_len):
+                if not is_connect[i][j]:
                     ans += 1
-                    graph.unite(i, j)
-                    matrix[i][j] = 1
-                    matrix[j][i] = 1
 
     print(ans)
 

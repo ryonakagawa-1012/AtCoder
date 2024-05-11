@@ -238,18 +238,25 @@ class Deque:
 
 
 def main():
-    from math import floor, ceil
-
+    from  bisect import bisect_left
     n = int(readline())
-
-    kokuban = Deque([n])
-    kokuban_len = 0
-    while kokuban[0] > 2:
-        tmp1 = floor(n/2)
-        tmp2 = ceil(n/2)
-        x = n
-
-
+    a = list(sep_read(int))
+    m = int(readline())
+    b = list(sep_read(int))
+    ab = sorted(a[i] + b[j] for i in range(n) for j in range(m))
+    len_ab = len(ab)
+    l = int(readline())
+    c = list(sep_read(int))
+    q = int(readline())
+    x = list(sep_read(int))
+    for X in x:
+        for C in c:
+            idx = bisect_left(ab, X-C)
+            if idx != len_ab and ab[idx] == X-C:
+                yes()
+                break
+        else:
+            no()
 
 
 

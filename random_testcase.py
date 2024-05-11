@@ -17,10 +17,8 @@ def a_to_z(lower=True):
 
 from random import randint
 
-N = randint(1, 200000)
-A = randint(1, 10**9)
-B = randint(1, 10**9)
-D = sorted((randint(1, 10000) for i in range(N)))
+N = randint(1, 20000)
+A = list(randint(0, 100000) for i in range(N))
 
-print(N, A, B)
-print(*D, sep=" ")
+print(N)
+print(*sorted(A), sep=" ")

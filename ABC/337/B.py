@@ -237,20 +237,35 @@ class Deque:
         return 'Deque({0})'.format(str(list(self)))
 
 
+
+def runLengthEncodeToString(S: str) -> str:
+    from itertools import groupby
+    grouped = groupby(S)
+    res = ""
+    for k, v in grouped:
+        res += k + str(len(list(v)))
+    return res
+
+
+def remove_digits(s):
+    return ''.join([c for c in s if not c.isdigit()])
+
+
 def main():
-    from math import floor, ceil
+    s = remove_digits(runLengthEncodeToString(readline()))
 
-    n = int(readline())
+    y_or_n(s == "A" or s == "B" or s == "C" or s == "AB" or s == "BC" or s == "AC" or s == "ABC")
 
-    kokuban = Deque([n])
-    kokuban_len = 0
-    while kokuban[0] > 2:
-        tmp1 = floor(n/2)
-        tmp2 = ceil(n/2)
-        x = n
-
-
-
+    # if len(s) == 1:
+    #     yes()
+    #     exit()
+    # elif len(s) == 2 and (s == "AB" or "BC"):
+    #     yes()
+    #     exit()
+    # else:
+    #         a, b= False, False
+    #         for S in s:
+    #             if a and S
 
 
 if __name__ == "__main__":

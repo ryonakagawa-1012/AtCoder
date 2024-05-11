@@ -238,19 +238,19 @@ class Deque:
 
 
 def main():
-    from math import floor, ceil
+    s = list(readline())
+    ans = []
+    count = 0
+    for S in s:
+        if S == "|":
+            count += 1
 
-    n = int(readline())
+        if count == 2:
+            count = 0
+        elif count % 2 == 0:
+            ans.append(S)
 
-    kokuban = Deque([n])
-    kokuban_len = 0
-    while kokuban[0] > 2:
-        tmp1 = floor(n/2)
-        tmp2 = ceil(n/2)
-        x = n
-
-
-
+    print(*ans, sep="")
 
 
 if __name__ == "__main__":

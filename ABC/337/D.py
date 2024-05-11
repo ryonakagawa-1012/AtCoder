@@ -237,20 +237,33 @@ class Deque:
         return 'Deque({0})'.format(str(list(self)))
 
 
+def yoko(yokot):
+    res = 0
+    for K in range(k):
+        if yokot[K] == "x":
+            res = float("inf")
+            break
+        else:
+            res += 1
+    return res
+
+
+h, w, k = sep_read(int)
+
+
 def main():
-    from math import floor, ceil
+    s = []
+    for i in range(h):
+        s.append(readline())
 
-    n = int(readline())
+    ans = []
+    for i in range(h):
+        wt = []
+        yokot = s[i]
+        for j in range(w-k):
+            wt.append(min(yoko(yokot), ))
 
-    kokuban = Deque([n])
-    kokuban_len = 0
-    while kokuban[0] > 2:
-        tmp1 = floor(n/2)
-        tmp2 = ceil(n/2)
-        x = n
-
-
-
+        ans.append(wt)
 
 
 if __name__ == "__main__":

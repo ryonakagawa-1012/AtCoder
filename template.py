@@ -393,7 +393,7 @@ class UnionFindLabel(UnionFind):
         return group_members
 
 
-sys.setrecursionlimit(10 ** 6)
+# sys.setrecursionlimit(10 ** 6)
 
 
 def main():

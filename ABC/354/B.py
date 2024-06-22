@@ -1,5 +1,7 @@
 import sys
 import decimal
+from collections import defaultdict
+from itertools import groupby
 
 
 def yes():
@@ -177,6 +179,33 @@ def print_2d(lst, sep=None):
         print(*LIST, sep=sep)
 
 
+# RUN LENGTH ENCODING str -> list(tuple())
+# example) "aabbbbaaca" -> [('a', 2), ('b', 4), ('a', 2), ('c', 1), ('a', 1)]
+def runLengthEncode(S: str) -> "List[tuple(str, int)]":
+    grouped = groupby(S)
+    res = []
+    for k, v in grouped:
+        res.append((k, int(len(list(v)))))
+    return res
+
+# RUN LENGTH DECODING list(tuple()) -> str
+# example) [('a', 2), ('b', 4), ('a', 2), ('c', 1), ('a', 1)] -> "aabbbbaaca"
+def runLengthDecode(L: "list[tuple]") -> str:
+    res = ""
+    for c, n in L:
+        res += c * int(n)
+    return res
+
+# RUN LENGTH ENCODING str -> str
+# example) "aabbbbaaca" -> "a2b4a2c1a1"
+def runLengthEncodeToString(S: str) -> str:
+    grouped = groupby(S)
+    res = ""
+    for k, v in grouped:
+        res += k + str(len(list(v)))
+    return res
+
+
 class Deque:
     """
     O(1)でランダムアクセスできるdeque
@@ -278,53 +307,106 @@ def dfs(pos, graph_lst, visited, path, goal):
     path.pop()
 
 
-class unionfind:
-    # n 頂点の Union-Find 木を作成
-    # （ここでは頂点番号が 1-indexed になるように実装しているが、0-indexed の場合は par, size のサイズは n でよい）
+class UnionFind:
     def __init__(self, n):
         self.n = n
-        self.par = [-1] * (n + 1)  # 最初は親が無い
-        self.size = [1] * (n + 1)  # 最初はグループの頂点数が 1
+        self.parents = [-1] * n
 
-    # 頂点 x の根を返す関数
-    def root(self, x):
-        # 1 個先（親）がなくなる（つまり根に到達する）まで、1 個先（親）に進み続ける
-        while self.par[x] != -1:
-            x = self.par[x]
-        return x
+    def find(self, x):
+        if self.parents[x] < 0:
+            return x
+        else:
+            self.parents[x] = self.find(self.parents[x])
+            return self.parents[x]
 
-    # 要素 u, v を統合する関数
-    def unite(self, u, v):
-        rootu = self.root(u)
-        rootv = self.root(v)
-        if rootu != rootv:
-            # u と v が異なるグループのときのみ処理を行う
-            if self.size[rootu] < self.size[rootv]:
-                self.par[rootu] = rootv
-                self.size[rootv] += self.size[rootu]
-            else:
-                self.par[rootv] = rootu
-                self.size[rootu] += self.size[rootv]
+    def union(self, x, y):
+        x = self.find(x)
+        y = self.find(y)
 
-    #  要素 u と v が同一のグループかどうかを返す関数
-    def same(self, u, v):
-        return self.root(u) == self.root(v)
+        if x == y:
+            return
+
+        if self.parents[x] > self.parents[y]:
+            x, y = y, x
+
+        self.parents[x] += self.parents[y]
+        self.parents[y] = x
+
+    def size(self, x):
+        return -self.parents[self.find(x)]
+
+    def same(self, x, y):
+        return self.find(x) == self.find(y)
+
+    def members(self, x):
+        root = self.find(x)
+        return [i for i in range(self.n) if self.find(i) == root]
+
+    def roots(self):
+        return [i for i, x in enumerate(self.parents) if x < 0]
+
+    def group_count(self):
+        return len(self.roots())
+
+    def all_group_members(self):
+        group_members = defaultdict(list)
+        for member in range(self.n):
+            group_members[self.find(member)].append(member)
+        return group_members
+
+    def __str__(self):
+        return '\n'.join(f'{r}: {m}' for r, m in self.all_group_members().items())
+
+
+class UnionFindLabel(UnionFind):
+    def __init__(self, labels):
+        assert len(labels) == len(set(labels))
+
+        self.n = len(labels)
+        self.parents = [-1] * self.n
+        self.d = {x: i for i, x in enumerate(labels)}
+        self.d_inv = {i: x for i, x in enumerate(labels)}
+
+    def find_label(self, x):
+        return self.d_inv[super().find(self.d[x])]
+
+    def union(self, x, y):
+        super().union(self.d[x], self.d[y])
+
+    def size(self, x):
+        return super().size(self.d[x])
+
+    def same(self, x, y):
+        return super().same(self.d[x], self.d[y])
+
+    def members(self, x):
+        root = self.find(self.d[x])
+        return [self.d_inv[i] for i in range(self.n) if self.find(i) == root]
+
+    def roots(self):
+        return [self.d_inv[i] for i, x in enumerate(self.parents) if x < 0]
+
+    def all_group_members(self):
+        group_members = defaultdict(list)
+        for member in range(self.n):
+            group_members[self.d_inv[self.find(member)]].append(self.d_inv[member])
+        return group_members
 
 
 # sys.setrecursionlimit(10 ** 6)
 
 
 def main():
-    import networkx as nx
-    n, m = sep_read(int)
-    graph = nx.DiGraph()
-    for i in range(m):
-        at, bt, ct = sep_read(int)
-        graph.add_edge(at, bt, weight=ct)
-        graph.add_edge(bt, at, weight=ct)
+    n = int(input())
+    lst = dict()
+    t = 0
+    s = []
+    for i in range(n):
+        st, ct = sep_read()
+        s.append(st)
+        t += int(ct)
 
-    for i in range(1, n+1):
-        print(nx.dijkstra_path_length(graph, 1, i))
+    print(sorted(s)[t%n])
 
 
 if __name__ == "__main__":

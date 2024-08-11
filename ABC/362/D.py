@@ -397,33 +397,6 @@ class UnionFindLabel(UnionFind):
 
 
 def main():
-    n, t = sep_read(int)
-    s = input()
-    x = list(sep_read(int))
-
-    ant = []
-    for i in range(n):
-        ant.append((x[i], s[i]))
-
-    ant = sorted(ant, key=lambda x: x[0])
-
-    ob = []
-    of = []
-    iib = []
-    iif = []
-    for i in range(n):
-        if ant[i][1] == "0":
-            ob.append(ant[i][0])
-            of.append(ant[i][0] - t)
-        else:
-            iib.append(ant[i][0])
-            iif.append(ant[i][0] + t)
-
-    print(ob)
-    print(of)
-    print(iib)
-    print(iif)
-
 
 
 if __name__ == "__main__":

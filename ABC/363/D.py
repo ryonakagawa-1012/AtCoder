@@ -396,33 +396,44 @@ class UnionFindLabel(UnionFind):
 # sys.setrecursionlimit(10 ** 6)
 
 
+def kaibun(n, keta, lst):
+    if keta == 1:
+        return str(n-1)
+    else:
+        return
+
+
 def main():
-    n, t = sep_read(int)
-    s = input()
-    x = list(sep_read(int))
+    from itertools import accumulate
+    from bisect import bisect_right
 
-    ant = []
-    for i in range(n):
-        ant.append((x[i], s[i]))
+    n = int(input())
 
-    ant = sorted(ant, key=lambda x: x[0])
+    if 1 <= n <= 9:
+        print(n-1)
+        exit()
 
-    ob = []
-    of = []
-    iib = []
-    iif = []
-    for i in range(n):
-        if ant[i][1] == "0":
-            ob.append(ant[i][0])
-            of.append(ant[i][0] - t)
-        else:
-            iib.append(ant[i][0])
-            iif.append(ant[i][0] + t)
+    keta_num = [10, 9, 90, 90]
+    for i in range(4, 35):
+        keta_num.append(9 * keta_num[i - 2])
 
-    print(ob)
-    print(of)
-    print(iib)
-    print(iif)
+    print(keta_num)
+    print(len(keta_num))
+
+    keta_num = list(accumulate(keta_num))
+
+    print(keta_num)
+
+    keta = 0
+    for i in range(len(keta_num)):
+        if keta_num[i] < n:
+            keta = i + 2
+
+    print(keta)
+
+    print(keta[n])
+
+    print(kaibun(n, keta, keta_num))
 
 
 

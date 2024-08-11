@@ -4,113 +4,6 @@ from collections import defaultdict
 from itertools import groupby
 
 
-def yes():
-    print("Yes")
-
-
-def no():
-    print("No")
-
-
-def y_or_n(yes_cond):
-    print("Yes" if yes_cond else "No")
-
-
-def a_to_z(lower=True):
-    """
-    a~zまたはA~Zが入ったリストを作成する関数
-
-    Parameters
-    ----------
-    lower : bool
-        小文字か大文字か(デフォルトは小文字)
-
-    Returns
-    -------
-    return : list
-        a~zまたはA~Zが入ったリスト
-    """
-    return list(chr(ord("a" if lower else "A") + i) for i in range(26))
-
-
-def atcoder():
-    """
-    リスト ['a', 't', 'c', 'o', 'd', 'e', 'r'] を作成する関数
-
-    Returns
-    -------
-    return : list
-        ['a', 't', 'c', 'o', 'd', 'e', 'r']
-    """
-    return list("atcoder")
-
-
-def takahashi():
-    print("Takahashi")
-
-
-def aoki():
-    print("Aoki")
-
-
-def readline(back_slash=False):
-    """
-    文字を受け取る関数(input()を短く、高速化した関数)
-
-    Parameters
-    ----------
-    back_slash : bool
-        末尾の\\nまで読み取るかどうか(デフォルトはFalse)
-
-    Returns
-    -------
-    return : str
-        受け取った文字
-    """
-    if back_slash:
-        return sys.stdin.readline()
-    else:
-        return sys.stdin.readline().rstrip()
-
-
-def sep_read(types=str):
-    """
-    複数の文字を受け取る関数(input().sprit()を短く、高速化した関数)
-
-    Parameters
-    ----------
-    types : type
-        受け取った値をキャストする型(デフォルトはstr型)
-
-    Returns
-    -------
-    return : list or map
-        typesによって異なる
-    """
-    if types == str:
-        return sys.stdin.readline().rstrip().split()
-    else:
-        return map(types, sys.stdin.readline().split())
-
-
-def read_multi_line_input():
-    """
-    複数行の数字を受け取る関数
-
-    Returns
-    -------
-    return : list
-        受け取った数字のリスト
-    """
-    a = []
-    while True:
-        try:
-            a.append(int(input()))
-        except EOFError:
-            break
-    return a
-
-
 def bit_full_search(lst, n):
     """
     ビット全探索する関数
@@ -188,6 +81,7 @@ def runLengthEncode(S: str) -> "List[tuple(str, int)]":
         res.append((k, int(len(list(v)))))
     return res
 
+
 # RUN LENGTH DECODING list(tuple()) -> str
 # example) [('a', 2), ('b', 4), ('a', 2), ('c', 1), ('a', 1)] -> "aabbbbaaca"
 def runLengthDecode(L: "list[tuple]") -> str:
@@ -195,6 +89,7 @@ def runLengthDecode(L: "list[tuple]") -> str:
     for c, n in L:
         res += c * int(n)
     return res
+
 
 # RUN LENGTH ENCODING str -> str
 # example) "aabbbbaaca" -> "a2b4a2c1a1"
@@ -397,33 +292,20 @@ class UnionFindLabel(UnionFind):
 
 
 def main():
-    n, t = sep_read(int)
-    s = input()
-    x = list(sep_read(int))
-
-    ant = []
+    n = int(input())
+    flag = 0
     for i in range(n):
-        ant.append((x[i], s[i]))
-
-    ant = sorted(ant, key=lambda x: x[0])
-
-    ob = []
-    of = []
-    iib = []
-    iif = []
-    for i in range(n):
-        if ant[i][1] == "0":
-            ob.append(ant[i][0])
-            of.append(ant[i][0] - t)
+        s = input()
+        if s == "sweet":
+            flag += 1
         else:
-            iib.append(ant[i][0])
-            iif.append(ant[i][0] + t)
+            flag = 0
 
-    print(ob)
-    print(of)
-    print(iib)
-    print(iif)
+        if flag == 2 and i != n-1:
+            print("No")
+            exit()
 
+    print("Yes")
 
 
 if __name__ == "__main__":

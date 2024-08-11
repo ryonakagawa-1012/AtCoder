@@ -129,7 +129,7 @@ def bit_full_search(lst, n):
     """
     ans = []
     for i in range(2 ** n):
-        s_u_m = 0
+        s_u_m = ""
         for j in range(n):
             bit = (2 ** j)
             if (i // bit) % 2 == 1:
@@ -397,33 +397,34 @@ class UnionFindLabel(UnionFind):
 
 
 def main():
-    n, t = sep_read(int)
+    from itertools import permutations
+    n, k = sep_read(int)
     s = input()
-    x = list(sep_read(int))
 
-    ant = []
-    for i in range(n):
-        ant.append((x[i], s[i]))
+    lst = list(permutations(s))
+    moji = set()
+    # print(lst)
+    for i in range(len(lst)):
+        moji.add("".join(lst[i]))
 
-    ant = sorted(ant, key=lambda x: x[0])
+    # print(moji)
 
-    ob = []
-    of = []
-    iib = []
-    iif = []
-    for i in range(n):
-        if ant[i][1] == "0":
-            ob.append(ant[i][0])
-            of.append(ant[i][0] - t)
-        else:
-            iib.append(ant[i][0])
-            iif.append(ant[i][0] + t)
+    moji = list(moji)
 
-    print(ob)
-    print(of)
-    print(iib)
-    print(iif)
+    ans = len(moji)
+    # print(ans)
+    for i in range(len(moji)):
+        tmp = moji[i]
+        # print(tmp)
+        for j in range(n-k+1):
+            # print(tmp[j:j+k], tmp[j:j+k][::-1])
+            if tmp[j:j+k] == tmp[j:j+k][::-1]:
+                ans -= 1
+                break
 
+    print(ans)
+
+    cc = CC('my_module')
 
 
 if __name__ == "__main__":

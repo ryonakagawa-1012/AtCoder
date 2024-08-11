@@ -4,113 +4,6 @@ from collections import defaultdict
 from itertools import groupby
 
 
-def yes():
-    print("Yes")
-
-
-def no():
-    print("No")
-
-
-def y_or_n(yes_cond):
-    print("Yes" if yes_cond else "No")
-
-
-def a_to_z(lower=True):
-    """
-    a~zまたはA~Zが入ったリストを作成する関数
-
-    Parameters
-    ----------
-    lower : bool
-        小文字か大文字か(デフォルトは小文字)
-
-    Returns
-    -------
-    return : list
-        a~zまたはA~Zが入ったリスト
-    """
-    return list(chr(ord("a" if lower else "A") + i) for i in range(26))
-
-
-def atcoder():
-    """
-    リスト ['a', 't', 'c', 'o', 'd', 'e', 'r'] を作成する関数
-
-    Returns
-    -------
-    return : list
-        ['a', 't', 'c', 'o', 'd', 'e', 'r']
-    """
-    return list("atcoder")
-
-
-def takahashi():
-    print("Takahashi")
-
-
-def aoki():
-    print("Aoki")
-
-
-def readline(back_slash=False):
-    """
-    文字を受け取る関数(input()を短く、高速化した関数)
-
-    Parameters
-    ----------
-    back_slash : bool
-        末尾の\\nまで読み取るかどうか(デフォルトはFalse)
-
-    Returns
-    -------
-    return : str
-        受け取った文字
-    """
-    if back_slash:
-        return sys.stdin.readline()
-    else:
-        return sys.stdin.readline().rstrip()
-
-
-def sep_read(types=str):
-    """
-    複数の文字を受け取る関数(input().sprit()を短く、高速化した関数)
-
-    Parameters
-    ----------
-    types : type
-        受け取った値をキャストする型(デフォルトはstr型)
-
-    Returns
-    -------
-    return : list or map
-        typesによって異なる
-    """
-    if types == str:
-        return sys.stdin.readline().rstrip().split()
-    else:
-        return map(types, sys.stdin.readline().split())
-
-
-def read_multi_line_input():
-    """
-    複数行の数字を受け取る関数
-
-    Returns
-    -------
-    return : list
-        受け取った数字のリスト
-    """
-    a = []
-    while True:
-        try:
-            a.append(int(input()))
-        except EOFError:
-            break
-    return a
-
-
 def bit_full_search(lst, n):
     """
     ビット全探索する関数
@@ -397,33 +290,43 @@ class UnionFindLabel(UnionFind):
 
 
 def main():
-    n, t = sep_read(int)
-    s = input()
-    x = list(sep_read(int))
-
-    ant = []
+    import numpy as np
+    n = int(input())
+    s = []
+    max_len = 0
     for i in range(n):
-        ant.append((x[i], s[i]))
+        row = input()
+        s.append(row)
+        max_len = max(max_len, len(row))
 
-    ant = sorted(ant, key=lambda x: x[0])
+    padded_s = [list(row.ljust(max_len)) for row in s]
 
-    ob = []
-    of = []
-    iib = []
-    iif = []
-    for i in range(n):
-        if ant[i][1] == "0":
-            ob.append(ant[i][0])
-            of.append(ant[i][0] - t)
-        else:
-            iib.append(ant[i][0])
-            iif.append(ant[i][0] + t)
+    t = np.array(padded_s)
 
-    print(ob)
-    print(of)
-    print(iib)
-    print(iif)
+    t_rotated = np.rot90(t, 3)
 
+    t_lst = t_rotated.tolist()
+
+    # t = []
+    # for i in range(len(t_lst)):
+    #     tmp = []
+    #     for j in range(len(t_lst[i])):
+    #         if t_lst[i][j] != " ":
+    #             tmp.append(t_lst[i][j])
+    #     t.append(tmp)
+
+    for i in range(len(t)):
+        #  t[i]
+        # print(t[i])
+        for j in range(len(t[i])):
+            if j != len(t[i]) - 1:
+                # print(t[i][j])
+                print(t[i][j:len(t[i])-1])
+                if t[i][j] == " " and t[i][j:len(t[i])-1] != [" " for _ in range(len(t[i])-j)]:
+                    t[i][j] = "*"
+
+    for i in range(len(t)):
+        print("".join(t[i]))
 
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-import sys
 import decimal
 from collections import defaultdict
 from itertools import groupby
@@ -288,10 +287,12 @@ class UnionFindLabel(UnionFind):
 
 # sys.setrecursionlimit(10 ** 6)
 
+import sys
+
 
 def main():
     a, b, c, d = map(int, sys.stdin.readline().split())
-
+    print((d // (b + c)) * a * b + min(d % (b + c), b) * a)
 
 
 if __name__ == "__main__":

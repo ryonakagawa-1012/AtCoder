@@ -1,24 +1,27 @@
-def main():
-    import sys
-    input = sys.stdin.read
-    data = input().split()
+from collections import defaultdict
 
-    N = int(data[0])
-    S = data[1:N+1]
 
-    M = max(len(s) for s in S)
+N, M = map(int, input().split())
+A = list(map(int, input().split()))
+B = []
 
-    T = ['' for _ in range(M)]
+normal = defaultdict(int)
+answer = 0
 
-    for i in range(N):
-        s = S[i]
-        for j in range(len(s)):
-            T[j] = T[j] + s[j]
-        for j in range(len(s), M):
-            T[j] = T[j] + '*'
+loop = sum(A)
 
-    for t in T:
-        print(t)
+total = 0
+for a in A:
+    B.append(total)
+    normal[total % M] += 1
+    total += a
 
-if __name__ == "__main__":
-    main()
+print(B)
+print(normal)
+
+for b in B:
+    normal[b % M] -= 1
+    answer += normal[b % M]
+    normal[(b + loop) % M] += 1
+
+print(answer)

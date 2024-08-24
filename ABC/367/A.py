@@ -289,10 +289,18 @@ class UnionFindLabel(UnionFind):
 # sys.setrecursionlimit(10 ** 6)
 
 
-def input():return sys.stdin.readline().rstrip()
-
-
 def main():
+    a, b, c = map(int, sys.stdin.readline().split())
+    if c <= b:
+        if c <= a <= b:
+            print("Yes")
+        else:
+            print("No")
+    else:
+        if b <= a <= c:
+            print("No")
+        else:
+            print("Yes")
 
 
 if __name__ == "__main__":

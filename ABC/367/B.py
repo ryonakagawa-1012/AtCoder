@@ -289,10 +289,29 @@ class UnionFindLabel(UnionFind):
 # sys.setrecursionlimit(10 ** 6)
 
 
-def input():return sys.stdin.readline().rstrip()
-
-
 def main():
+    x = input()
+    ans = ""
+    zero_flag = False
+    for X in x[::-1]:
+        if X == ".":
+            zero_flag = True
+            ans += X
+            continue
+
+        if zero_flag:
+            ans += X
+        else:
+            if X == "0":
+                continue
+            else:
+                ans += X
+                zero_flag = True
+
+    if ans[0] == ".":
+        print(ans[1:][::-1])
+    else:
+        print(ans[::-1])
 
 
 if __name__ == "__main__":

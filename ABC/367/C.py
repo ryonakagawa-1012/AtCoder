@@ -1,3 +1,4 @@
+import itertools
 import sys
 import decimal
 from collections import defaultdict
@@ -289,10 +290,18 @@ class UnionFindLabel(UnionFind):
 # sys.setrecursionlimit(10 ** 6)
 
 
-def input():return sys.stdin.readline().rstrip()
-
-
 def main():
+    n, k = map(int, sys.stdin.readline().split())
+    r = list(map(int, sys.stdin.readline().split()))
+    full_lst = []
+    for i in range(n):
+        full_lst.append([j for j in range(1, r[i] + 1)])
+
+    # print(full_lst)
+
+    for f in list(itertools.product(*full_lst)):
+        if sum(f) % k == 0:
+            print(*f)
 
 
 if __name__ == "__main__":

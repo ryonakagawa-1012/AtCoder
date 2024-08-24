@@ -289,10 +289,13 @@ class UnionFindLabel(UnionFind):
 # sys.setrecursionlimit(10 ** 6)
 
 
-def input():return sys.stdin.readline().rstrip()
-
-
 def main():
+    from itertools import accumulate
+    n, m = map(int, sys.stdin.readline().split())
+    a = list(map(int, sys.stdin.readline().split()))
+    accm = list(accumulate(a))
+    print(accm)
+
 
 
 if __name__ == "__main__":

@@ -301,8 +301,7 @@ def main():
     for i in range(n):
         target = h[i]
         if target >= 5:
-            t += 3 * (target//5)
-            target -=  5*(target//5)
+            t +=target % 5
         while target > 0:
             t += 1
             target -= 1

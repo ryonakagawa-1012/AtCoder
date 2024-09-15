@@ -17,8 +17,8 @@ def a_to_z(lower=True):
 
 from random import randint
 
-N = randint(1, 20000)
+N = randint(1, 100000)
 A = list(randint(0, 100000) for i in range(N))
 
 print(N)
-print(*sorted(A), sep=" ")
+print(*A, sep=" ")

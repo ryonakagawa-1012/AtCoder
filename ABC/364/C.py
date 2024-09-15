@@ -290,7 +290,21 @@ class UnionFindLabel(UnionFind):
 
 
 def main():
-
-
+    n, x, y = map(int, sys.stdin.readline().split())
+    a = sorted(list(map(int, sys.stdin.readline().split())), reverse=True)
+    b = sorted(list(map(int, sys.stdin.readline().split())), reverse=True)
+    
+    a_sum = 0
+    b_sum = 0
+    for i in range(n):
+        a_sum += a[i]
+        b_sum += b[i]
+        if x < a_sum or y < b_sum:
+            print(i+1)
+            break
+    else:
+        print(n)
+    
+    
 if __name__ == "__main__":
     main()

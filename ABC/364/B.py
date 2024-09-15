@@ -288,21 +288,32 @@ class UnionFindLabel(UnionFind):
 
 # sys.setrecursionlimit(10 ** 6)
 
+direction = {"U": (0, -1), "D":(0, 1), "L":(-1, 0), "R":(1, 0)}
+
+
+def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool: 
+    return {"U": y == 0, "D": y == max_y, "L": x == 0, "R": x == max_x}[muki]
+
 
 def main():
-    n, x, y = map(int, sys.stdin.readline().split())
-    a = list(map(int, sys.stdin.readline().split()))
-    b = list(map(int, sys.stdin.readline().split()))
+    h, w = map(int, sys.stdin.readline().split())
+    si, sj = map(lambda x: int(x)-1, sys.stdin.readline().split())
+    c = []
+    for _ in range(h):
+        c.append(list(input()))
+    x = list(input())
 
-    a_sum = 0
-    b_sum = 0
-    for i in range(n):
-        a_sum += a[i]
-        b_sum += b[i]
-
-        if a_sum >= x or b_sum >= y:
-
-
-
+    h -= 1
+    w -= 1
+    for X in x:
+        # print(w, h, sj, si)
+        dj, di = direction[X]
+        # print(not is_end(sj, si, w, h, X), c[si+di][sj+dj] == ".")
+        if not is_end(sj, si, w, h, X) and c[si+di][sj+dj] == ".":
+            si += di
+            sj += dj
+    
+    print(si+1, sj+1)
+        
 if __name__ == "__main__":
     main()

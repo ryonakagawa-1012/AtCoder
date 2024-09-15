@@ -397,7 +397,10 @@ class UnionFindLabel(UnionFind):
 
 
 def main():
-
+    n = int(input())
+    for _ in range(n):
+        lt, rt = map(int, sys.stdin.readline().split())
+        
 
 if __name__ == "__main__":
     main()

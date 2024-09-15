@@ -4,113 +4,6 @@ from collections import defaultdict
 from itertools import groupby
 
 
-def yes():
-    print("Yes")
-
-
-def no():
-    print("No")
-
-
-def y_or_n(yes_cond):
-    print("Yes" if yes_cond else "No")
-
-
-def a_to_z(lower=True):
-    """
-    a~zまたはA~Zが入ったリストを作成する関数
-
-    Parameters
-    ----------
-    lower : bool
-        小文字か大文字か(デフォルトは小文字)
-
-    Returns
-    -------
-    return : list
-        a~zまたはA~Zが入ったリスト
-    """
-    return list(chr(ord("a" if lower else "A") + i) for i in range(26))
-
-
-def atcoder():
-    """
-    リスト ['a', 't', 'c', 'o', 'd', 'e', 'r'] を作成する関数
-
-    Returns
-    -------
-    return : list
-        ['a', 't', 'c', 'o', 'd', 'e', 'r']
-    """
-    return list("atcoder")
-
-
-def takahashi():
-    print("Takahashi")
-
-
-def aoki():
-    print("Aoki")
-
-
-def readline(back_slash=False):
-    """
-    文字を受け取る関数(input()を短く、高速化した関数)
-
-    Parameters
-    ----------
-    back_slash : bool
-        末尾の\\nまで読み取るかどうか(デフォルトはFalse)
-
-    Returns
-    -------
-    return : str
-        受け取った文字
-    """
-    if back_slash:
-        return sys.stdin.readline()
-    else:
-        return sys.stdin.readline().rstrip()
-
-
-def sep_read(types=str):
-    """
-    複数の文字を受け取る関数(input().sprit()を短く、高速化した関数)
-
-    Parameters
-    ----------
-    types : type
-        受け取った値をキャストする型(デフォルトはstr型)
-
-    Returns
-    -------
-    return : list or map
-        typesによって異なる
-    """
-    if types == str:
-        return sys.stdin.readline().rstrip().split()
-    else:
-        return map(types, sys.stdin.readline().split())
-
-
-def read_multi_line_input():
-    """
-    複数行の数字を受け取る関数
-
-    Returns
-    -------
-    return : list
-        受け取った数字のリスト
-    """
-    a = []
-    while True:
-        try:
-            a.append(int(input()))
-        except EOFError:
-            break
-    return a
-
-
 def bit_full_search(lst, n):
     """
     ビット全探索する関数
@@ -396,17 +289,73 @@ class UnionFindLabel(UnionFind):
 # sys.setrecursionlimit(10 ** 6)
 
 
+def input():return sys.stdin.readline().rstrip()
+
+
+direction = {"U": (0, -1), "D":(0, 1), "L":(-1, 0), "R":(1, 0)}
+
+
+def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
+    return {"U": y == 0, "D": y == max_y, "L": x == 0, "R": x == max_x}[muki]
+
+from math import sqrt
+from collections import defaultdict
+
+def mo_algorithm(a, n):
+    block_size = int(sqrt(n))
+
+    queries = []
+    total_sum = 0
+
+    for i in range(n):
+        for j in range(i, n):
+            queries.append((i, j))
+
+    queries.sort(key=lambda x: (x[0] // block_size, x[1]))
+
+    freq = defaultdict(int)
+    current_l, current_r = 0, -1
+    distinct_count = 0
+
+    def add(x):
+        nonlocal distinct_count
+        if freq[x] == 0:
+            distinct_count += 1
+        freq[x] += 1
+
+    def remove(x):
+        nonlocal distinct_count
+        if freq[x] == 1:
+            distinct_count -= 1
+        freq[x] -= 1
+
+    for l, r in queries:
+        while current_r < r:
+            current_r += 1
+            add(a[current_r])
+        while current_r > r:
+            remove(a[current_r])
+            current_r -= 1
+
+        while current_l < l:
+            remove(a[current_l])
+            current_l += 1
+        while current_l > l:
+            current_l -= 1
+            add(a[current_l])
+
+        total_sum += distinct_count
+
+    return total_sum
+
+
 def main():
-    n, k = sep_read(int)
-    a = sorted(list(sep_read(int)))
+    n = int(input())
+    a = list(map(int, input().split()))
 
-    ans = []
-    # print(n-k-1)
-    for i in range(n-k-1):
-        # print(i, n-k-1+i)
-        ans.append(a[n-k-1+i]-a[i])
+    result = mo_algorithm(a, n)
+    print(result)
 
-    print(0 if len(ans) == 0 else min(ans))
 
 if __name__ == "__main__":
     main()

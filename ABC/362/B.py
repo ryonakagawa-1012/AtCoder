@@ -395,10 +395,20 @@ class UnionFindLabel(UnionFind):
 
 # sys.setrecursionlimit(10 ** 6)
 
+def dist(x1, y1, x2, y2):
+    return (x2-x1)**2+(y2-y1)**2
 
 def main():
-
-
-
+    xa, ya = map(int, sys.stdin.readline().split())
+    xb, yb = map(int, sys.stdin.readline().split())
+    xc, yc = map(int, sys.stdin.readline().split())
+    
+    dist_lst = sorted([dist(xa, ya, xb, yb), dist(xb, yb, xc, yc), dist(xc, yc, xa, ya)])
+    
+    if dist_lst[-1] == dist_lst[0] + dist_lst[1]:
+        print("Yes")
+    else:
+        print("No")
+    
 if __name__ == "__main__":
     main()

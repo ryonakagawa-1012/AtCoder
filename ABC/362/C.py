@@ -398,9 +398,18 @@ class UnionFindLabel(UnionFind):
 
 def main():
     n = int(input())
+    l = []
+    r = []
     for _ in range(n):
         lt, rt = map(int, sys.stdin.readline().split())
-        
+        l.append(lt)
+        r.append(rt)
+
+    if 0 < sum(l) or sum(r) < 0:
+        print("No")
+        return
+
+
 
 if __name__ == "__main__":
     main()

@@ -23,12 +23,12 @@ def bit_full_search(lst, n):
     """
     ans = []
     for i in range(2 ** n):
-        s_u_m = []
+        s_u_m = 0
         for j in range(n):
             bit = (2 ** j)
             if (i // bit) % 2 == 1:
-                s_u_m.append(lst[j])
-        ans.append("".join(s_u_m[::-1]))
+                s_u_m += lst[j]
+        ans.append(s_u_m)
 
     return ans
 
@@ -301,12 +301,16 @@ def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
 
 
 def main():
-    k = int(input())
+    n, m, k = map(int, input().split())
+    a = list(map(int, input().split()))
 
-    lst = [str(i) for i in range(10)]
-    # print(lst)
-    ans = sorted(map(int, bit_full_search(lst, len(lst))[1:]))
-    print(ans[k])
+    siguma = k - sum(a)
+
+    a = list((a[i], i+1) for i in range(n))
+
+    print(a)
+    print(siguma)
+    print(sorted(a))
 
 
 if __name__ == "__main__":

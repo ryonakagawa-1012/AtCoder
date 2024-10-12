@@ -4,6 +4,8 @@ from collections import defaultdict
 from itertools import groupby
 from functools import cache
 
+from numpy.matrixlib.defmatrix import matrix
+
 
 def bit_full_search(lst, n):
     """
@@ -23,12 +25,12 @@ def bit_full_search(lst, n):
     """
     ans = []
     for i in range(2 ** n):
-        s_u_m = []
+        s_u_m = 0
         for j in range(n):
             bit = (2 ** j)
             if (i // bit) % 2 == 1:
-                s_u_m.append(lst[j])
-        ans.append("".join(s_u_m[::-1]))
+                s_u_m += lst[j]
+        ans.append(s_u_m)
 
     return ans
 
@@ -287,13 +289,112 @@ class UnionFindLabel(UnionFind):
         return group_members
 
 
+class Quadtree:
+    def __init__(self, x_min, x_max, y_min, y_max, max_depth=5):
+        self.x_min = x_min
+        self.x_max = x_max
+        self.y_min = y_min
+        self.y_max = y_max
+        self.max_depth = max_depth
+        self.children = None
+        self.is_filled = False
+
+    def subdivide(self):
+        mid_x = (self.x_min + self.x_max) / 2
+        mid_y = (self.y_min + self.y_max) / 2
+        self.children = [
+            Quadtree(self.x_min, mid_x, self.y_min, mid_y, self.max_depth - 1),  # 左下
+            Quadtree(mid_x, self.x_max, self.y_min, mid_y, self.max_depth - 1),  # 右下
+            Quadtree(self.x_min, mid_x, mid_y, self.y_max, self.max_depth - 1),  # 左上
+            Quadtree(mid_x, self.x_max, mid_y, self.y_max, self.max_depth - 1)   # 右上
+        ]
+
+    def insert(self, x_min, x_max, y_min, y_max):
+        if self.max_depth == 0:
+            self.is_filled = True
+            return
+
+        if not self.overlaps(x_min, x_max, y_min, y_max):
+            return  # この領域と重ならない場合は何もしない
+
+        if not self.children:
+            self.subdivide()
+
+        if self.contains_area(x_min, x_max, y_min, y_max):
+            self.is_filled = True
+            self.children = None  # 子ノードは不要
+            return
+
+        for child in self.children:
+            child.insert(x_min, x_max, y_min, y_max)
+
+        # 子ノードが全て塗りつぶされた場合、このノードも塗りつぶされたとみなす
+        if all(child.is_filled for child in self.children):
+            self.is_filled = True
+            self.children = None
+
+    def overlaps(self, x_min, x_max, y_min, y_max):
+        return not (x_max <= self.x_min or x_min >= self.x_max or y_max <= self.y_min or y_min >= self.y_max)
+
+    def contains_area(self, x_min, x_max, y_min, y_max):
+        return self.x_min <= x_min and self.x_max >= x_max and self.y_min <= y_min and self.y_max >= y_max
+
+    def calculate_filled_area(self):
+        if self.is_filled:
+            # このノードが塗りつぶされている場合、その面積を返す
+            return (self.x_max - self.x_min) * (self.y_max - self.y_min)
+
+        if not self.children:
+            # このノードが塗りつぶされておらず、子ノードもない場合、面積は0
+            return 0
+
+        # 子ノードがある場合、各子ノードの面積を再帰的に計算
+        total_area = 0
+        for child in self.children:
+            total_area += child.calculate_filled_area()
+        return total_area
+
+    def query(self, x, y):
+        if self.is_filled:
+            return True
+
+        if not self.children:
+            return False
+
+        for child in self.children:
+            if child.contains(x, y):
+                return child.query(x, y)
+        return False
+
+    def contains(self, x, y):
+        return self.x_min <= x <= self.x_max and self.y_min <= y <= self.y_max
+
+    def remove(self, x_min, x_max, y_min, y_max):
+        if not self.overlaps(x_min, x_max, y_min, y_max):
+            return
+
+        if self.max_depth == 0:
+            self.is_filled = False
+            return
+
+        if not self.children:
+            return
+
+        for child in self.children:
+            child.remove(x_min, x_max, y_min, y_max)
+
+        if all(not child.is_filled and not child.children for child in self.children):
+            self.children = None
+
+
+
 # sys.setrecursionlimit(10 ** 6)
 
 
 def input():return sys.stdin.readline().rstrip()
 
 
-direction = {"U": (0, -1), "D":(0, 1), "L":(-1, 0), "R":(1, 0)}
+direction = {"U": (0, -1), "D":(0, 1), "L":(-1, 0), "R":(1, 0), "UL":(-1, -1), "UR":(1, -1), "DL":(-1, 1), "DR":(1, 1)}
 
 
 def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
@@ -301,12 +402,19 @@ def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
 
 
 def main():
-    k = int(input())
+    n = int(input())
+    oxya = list(input().split())
+    matrix = Quadtree(0, 10**6, 0, 10**6)
+    for _ in range(n-1):
+        oxya = list(input().split())
+        o, x, y, a = oxya[0], int(oxya[1]), int(oxya[2]), int(oxya[3])
+        if o == "+":
+            matrix.insert(x, x+a-1, y+a-1, y)
+        else:
+            matrix.remove(x, x+a-1, y+a-1, y)
 
-    lst = [str(i) for i in range(10)]
-    # print(lst)
-    ans = sorted(map(int, bit_full_search(lst, len(lst))[1:]))
-    print(ans[k])
+    print(matrix.contains(2, 2))
+    print(matrix.calculate_filled_area())
 
 
 if __name__ == "__main__":

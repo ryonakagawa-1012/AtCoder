@@ -2,6 +2,7 @@ import sys
 import decimal
 from collections import defaultdict
 from itertools import groupby
+from functools import cache
 
 
 def bit_full_search(lst, n):
@@ -286,31 +287,17 @@ class UnionFindLabel(UnionFind):
         return group_members
 
 
-# sys.setrecursionlimit(10 ** 6)
+sys.setrecursionlimit(10 ** 6)
 
 
 def input():return sys.stdin.readline().rstrip()
 
 
-def main():
-    from math import floor, ceil
-    from sortedcontainers import SortedList
-    
-    n = SortedList([int(input())])
+from math import floor, ceil
 
-    ans = 0
-    while len(n) !=0:
-      # print(n)
-      poped = n.pop()
-      ans += poped
-      tmp1 = floor(poped/2)
-      tmp2 = ceil(poped/2)
-      # print(tmp1, tmp2)
-      if tmp1 >= 2: n.add(tmp1)
-      if tmp2 >= 2: n.add(tmp2)
-        
-    print(ans)
-    
+@cache
+def main(n):
+    return 0 if n <= 1 else n + main(n//2) + main((n+1)//2)
 
 if __name__ == "__main__":
-    main()
+    print(main(int(input())))

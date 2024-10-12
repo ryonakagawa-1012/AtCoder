@@ -2,7 +2,6 @@ import sys
 import decimal
 from collections import defaultdict
 from itertools import groupby
-from functools import cache
 
 
 def bit_full_search(lst, n):
@@ -23,12 +22,12 @@ def bit_full_search(lst, n):
     """
     ans = []
     for i in range(2 ** n):
-        s_u_m = []
+        s_u_m = 0
         for j in range(n):
             bit = (2 ** j)
             if (i // bit) % 2 == 1:
-                s_u_m.append(lst[j])
-        ans.append("".join(s_u_m[::-1]))
+                s_u_m += lst[j]
+        ans.append(s_u_m)
 
     return ans
 
@@ -287,7 +286,7 @@ class UnionFindLabel(UnionFind):
         return group_members
 
 
-# sys.setrecursionlimit(10 ** 6)
+sys.setrecursionlimit(10 ** 6)
 
 
 def input():return sys.stdin.readline().rstrip()
@@ -301,12 +300,17 @@ def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
 
 
 def main():
-    k = int(input())
+    n, x, y = map(int, input().split())
+    graph = defaultdict(list)
+    for _ in range(n-1):
+        ut, vt = map(int, input().split())
+        graph[ut].append(vt)
+        graph[vt].append(ut)
 
-    lst = [str(i) for i in range(10)]
-    # print(lst)
-    ans = sorted(map(int, bit_full_search(lst, len(lst))[1:]))
-    print(ans[k])
+    ans = []
+    visited = [False]*(n+1)
+    dfs(x, graph, visited, ans, y)
+    print(*ans)
 
 
 if __name__ == "__main__":

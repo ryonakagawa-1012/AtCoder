@@ -259,21 +259,7 @@ def main():
     from collections import defaultdict
 
     n, k = sep_read(int)
-    ab = []
-    for _ in range(n):
-        at, bt = sep_read(int)
-        ab.append((at, bt))
 
-    ans = defaultdict(int)
-    for AB in ab:
-        for i in range(1, AB[0]+1):
-            ans[i] += AB[1]
-
-    # print(ans)
-    for ANS in ans.items():
-        if ANS[1] <= k:
-            print(ANS[0])
-            exit()
 
 
 if __name__ == "__main__":

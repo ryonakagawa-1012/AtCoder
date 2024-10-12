@@ -23,12 +23,12 @@ def bit_full_search(lst, n):
     """
     ans = []
     for i in range(2 ** n):
-        s_u_m = []
+        s_u_m = 0
         for j in range(n):
             bit = (2 ** j)
             if (i // bit) % 2 == 1:
-                s_u_m.append(lst[j])
-        ans.append("".join(s_u_m[::-1]))
+                s_u_m += lst[j]
+        ans.append(s_u_m)
 
     return ans
 
@@ -293,7 +293,7 @@ class UnionFindLabel(UnionFind):
 def input():return sys.stdin.readline().rstrip()
 
 
-direction = {"U": (0, -1), "D":(0, 1), "L":(-1, 0), "R":(1, 0)}
+direction = {"U": (0, -1), "D":(0, 1), "L":(-1, 0), "R":(1, 0), "UL":(-1, -1), "UR":(1, -1), "DL":(-1, 1), "DR":(1, 1)}
 
 
 def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
@@ -301,12 +301,16 @@ def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
 
 
 def main():
-    k = int(input())
+    n, m = map(int, input().split())
+    if n == m == 1:
+        print(1)
+    elif n <= 2 and m <= 2:
+        print(0)
+    elif n == 1 or m == 1:
+        print(max(n, m)-2)
+    else:
+        print((n - 2) * (m - 2))
 
-    lst = [str(i) for i in range(10)]
-    # print(lst)
-    ans = sorted(map(int, bit_full_search(lst, len(lst))[1:]))
-    print(ans[k])
 
 
 if __name__ == "__main__":

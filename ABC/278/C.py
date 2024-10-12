@@ -2,7 +2,6 @@ import sys
 import decimal
 from collections import defaultdict
 from itertools import groupby
-from functools import cache
 
 
 def bit_full_search(lst, n):
@@ -23,12 +22,12 @@ def bit_full_search(lst, n):
     """
     ans = []
     for i in range(2 ** n):
-        s_u_m = []
+        s_u_m = 0
         for j in range(n):
             bit = (2 ** j)
             if (i // bit) % 2 == 1:
-                s_u_m.append(lst[j])
-        ans.append("".join(s_u_m[::-1]))
+                s_u_m += lst[j]
+        ans.append(s_u_m)
 
     return ans
 
@@ -301,12 +300,18 @@ def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
 
 
 def main():
-    k = int(input())
-
-    lst = [str(i) for i in range(10)]
-    # print(lst)
-    ans = sorted(map(int, bit_full_search(lst, len(lst))[1:]))
-    print(ans[k])
+    n, q = map(int, input().split())
+    follow = defaultdict(set)
+    for _ in range(q):
+        t, a, b = map(int, input().split())
+        a -= 1
+        b -= 1
+        if t == 1:
+            follow[a].add(b)
+        elif t == 2:
+            follow[a].discard(b)
+        else:
+            print("Yes" if b in follow[a] and a in follow[b] else "No")
 
 
 if __name__ == "__main__":

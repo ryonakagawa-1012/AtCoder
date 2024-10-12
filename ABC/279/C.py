@@ -300,6 +300,25 @@ def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
 
 
 def main():
+    h, w = map(int, input().split())
+    s = [list(input()) for _ in range(h)]
+    t = [list(input()) for _ in range(h)]
+    # print_2d(s)
+    # print_2d(t)
+
+    s_trans = list(zip(*s))
+    t_trans = list(zip(*t))
+
+    # print(s_trans)
+    # print(t_trans)
+
+    # print(sorted(s_trans))
+    # print(sorted(t_trans))
+
+    if sorted(s_trans) == sorted(t_trans):
+        print("Yes")
+    else:
+        print("No")
 
 
 if __name__ == "__main__":

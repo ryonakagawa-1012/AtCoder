@@ -301,7 +301,7 @@ def is_end(x: int, y: int, max_x: int, max_y: int, muki: str) -> bool:
 
 
 def main():
-
+    
 
 if __name__ == "__main__":
     main()

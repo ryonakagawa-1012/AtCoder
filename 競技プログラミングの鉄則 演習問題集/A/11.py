@@ -1,7 +1,9 @@
-import bisect
+def main():
+    from bisect import bisect
+    n, x = map(int, input().split())
+    a = list(map(int, input().split()))
 
+    print(bisect(a, x))
 
-N, X = map(int, input().split())
-A = list(map(int, input().split()))
-
-print(bisect.bisect_right(A, X))
+if __name__ == '__main__':
+    main()

@@ -42,7 +42,7 @@ def rounding(num, digit):
     num : float or int or str
         四捨五入したい数
     digit : int
-        丸める桁数（小数点以下の場合は負の値を指定）
+        丸める桁数（10^digitの1の最高桁に丸める）
 
     Returns
     -------
@@ -53,7 +53,7 @@ def rounding(num, digit):
     -----
     - digitが2以上の場合(2桁目以降に丸める時)、指数表記になるのでキャストが必要
     """
-    deci = 10 ** digit
+    deci = 10 ** digit if digit != 0 else 0
     return (decimal.Decimal(str(num)).
             quantize(decimal.Decimal(str(deci) if deci < 1 else "1E" + str(digit - 1)), decimal.ROUND_HALF_UP))
 

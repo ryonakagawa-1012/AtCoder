@@ -1,1 +1,0 @@
-print("".join([chr(_) for _ in range(65, 65+int(input()))]))

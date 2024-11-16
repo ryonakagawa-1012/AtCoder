@@ -201,6 +201,40 @@ def dfs(pos, graph_lst, visited, path, goal):
     path.pop()
 
 
+# こっちの方が早い
+class UnionFind:
+    def __init__(self):
+        self.parent = {}
+        self.rank = {}
+
+    def find(self, x):
+        if x not in self.parent:
+            self.parent[x] = x
+            self.rank[x] = 0
+            return x
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        x_root = self.find(x)
+        y_root = self.find(y)
+
+        if x_root == y_root:
+            return
+
+        if self.rank[x_root] < self.rank[y_root]:
+            self.parent[x_root] = y_root
+        else:
+            self.parent[y_root] = x_root
+            if self.rank[x_root] == self.rank[y_root]:
+                self.rank[x_root] += 1
+
+    def same(self, x, y):
+        return self.find(x) == self.find(y)
+
+
+
 class UnionFind:
     def __init__(self, n):
         self.n = n

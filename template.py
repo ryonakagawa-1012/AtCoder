@@ -1,8 +1,19 @@
 import sys
 import decimal
+import networkx as nx
+import matplotlib.pyplot as plt
 from collections import defaultdict
 from itertools import groupby
 from functools import cache
+import math
+
+
+def lcm(a, b):
+    return a * b // math.gcd(a, b)
+
+
+def euclid_distace(x1, y1, x2, y2):
+    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
 
 def bit_full_search(lst, n):
@@ -23,11 +34,11 @@ def bit_full_search(lst, n):
     """
     ans = []
     for i in range(2 ** n):
-        s_u_m = 0
+        s_u_m = []
         for j in range(n):
             bit = (2 ** j)
             if (i // bit) % 2 == 1:
-                s_u_m += lst[j]
+                s_u_m.append(lst[j])
         ans.append(s_u_m)
 
     return ans
@@ -42,7 +53,7 @@ def rounding(num, digit):
     num : float or int or str
         四捨五入したい数
     digit : int
-        丸める桁数（10^digitの1の最高桁に丸める）
+        丸める桁数
 
     Returns
     -------
@@ -322,6 +333,17 @@ class UnionFindLabel(UnionFind):
             group_members[self.d_inv[self.find(member)]].append(self.d_inv[member])
         return group_members
 
+
+def show(graph):
+    pos = nx.spring_layout(graph)  # レイアウトを指定
+
+    # グラフの描画
+    nx.draw_networkx(graph, pos, with_labels=True, node_size=700, node_color='lightblue', font_size=12)
+
+    # エッジの重みを描画
+    labels = nx.get_edge_attributes(graph, 'weight')
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+    plt.show()  # グラフを表示
 
 # sys.setrecursionlimit(10 ** 6)
 

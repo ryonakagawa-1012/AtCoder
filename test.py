@@ -1,2 +1,3 @@
-INF = float("inf")
-print(all([-INF, -INF, -INF]))
+import random
+
+print(random.randint(0, 1))

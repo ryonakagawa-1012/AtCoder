@@ -12,7 +12,77 @@ def lcm(a, b):
     return a * b // math.gcd(a, b)
 
 
+def base_n(number, base):
+    """
+    10進数をn進数に変換する関数
+    
+    Parameters
+    ----------
+    number : int
+        10進数の数値
+    base : int
+        変換したいn進数
+        
+    Returns
+    -------
+    return : str
+        n進数に変換された文字列
+    """
+    if number < 0:
+        return '-' + base_n(-number, base)
+    elif number < base:
+        return str(number)
+    else:
+        return base_n(number // base, base) + str(number % base)
+
+
+def base_10(number_str, base):
+    """
+    n進数を10進数に変換する関数
+    
+    Parameters
+    ----------
+    number_str : str
+        n進数の文字列
+    base : int
+        変換したいn進数
+        
+    Returns
+    -------
+    return : int
+        10進数に変換された数値
+    """
+    digits = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+    if base > len(digits):
+        raise ValueError(f"Base {base} is not supported. Maximum base is {len(digits)}.")
+
+    value = 0
+    for char in number_str:
+        value = value * base + digits.index(char)
+    return value
+
+
 def euclid_distace(x1, y1, x2, y2):
+    """
+    ユークリッド距離を求める関数
+    
+    Parameters
+    ----------
+    x1 : int
+        1点目のx座標
+    y1 : int
+        1点目のy座標
+    x2 : int
+        2点目のx座標
+    y2 : int
+        2点目のy座標
+        
+    Returns
+    -------
+    return : float
+        2点間のユークリッド距離
+    """
     return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
 
